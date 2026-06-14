@@ -121,90 +121,108 @@ export function executeACIMixDesign(
     baseAirPct = AIR_ENTRAINED_RECOMMENDED[specs.exposureLevel]?.[tmnKey] || 5.0;
   }
   
-  // Additive water adjustment
+  // Additive water adjustment (rounded to 3 decimal places)
   let adjustedWaterVol = baseWaterVol;
   if (materials.hasAdditive) {
     const reductionFactor = 1 - materials.additiveWaterReduction / 100;
-    adjustedWaterVol = baseWaterVol * reductionFactor;
+    adjustedWaterVol = parseFloat((baseWaterVol * reductionFactor).toFixed(3));
+  } else {
+    adjustedWaterVol = parseFloat(baseWaterVol.toFixed(3));
   }
   
-  // Step 3: Water/Cement Ratio (A/C)
-  const waterCementRatio = calculateWaterCementRatio(targetStrength, specs.airEntrained);
+  // Step 3: Water/Cement Ratio (A/C) -> Rounded to exactly 2 decimals as requested in step 6
+  const waterCementRatio = parseFloat(calculateWaterCementRatio(targetStrength, specs.airEntrained).toFixed(2));
   
-  // Step 4: Cement weight & volume
-  const cementWeight = adjustedWaterVol / waterCementRatio;
-  const cementVolume = cementWeight / (materials.cementSpecificGravity * 1000);
+  // Step 4: Cement weight & volume -> Cement weight rounded to 3 decimal places as requested in step 7
+  const cementWeight = parseFloat((adjustedWaterVol / waterCementRatio).toFixed(3));
+  const cementVolume = parseFloat((cementWeight / (materials.cementSpecificGravity * 1000)).toFixed(4));
   
   // Step 5: Additive weight & volume
   let additiveWeight = 0;
   let additiveVolume = 0;
   if (materials.hasAdditive) {
-    additiveWeight = cementWeight * (materials.additiveDosage / 100);
-    additiveVolume = additiveWeight / (materials.additiveSpecificGravity * 1000);
+    additiveWeight = parseFloat((cementWeight * (materials.additiveDosage / 100)).toFixed(3));
+    additiveVolume = parseFloat((additiveWeight / (materials.additiveSpecificGravity * 1000)).toFixed(4));
   }
   
-  // Step 6: Coarse Aggregate Volume & Weight
-  const b_b0 = calculateCoarseFactor(tmnKey, materials.fineFinenessModulus);
-  const coarseDryWeight = b_b0 * materials.coarseDryRoddedUnitWeight;
-  const coarseVolume = coarseDryWeight / (materials.coarseSpecificGravity * 1000);
+  // Step 6: Coarse Aggregate Factor -> Rounded to 2 decimal places as requested in step 8
+  const b_b0 = parseFloat(calculateCoarseFactor(tmnKey, materials.fineFinenessModulus).toFixed(2));
+  // Step 8 Weight of coarse aggregate (using the rounded 2-decimal factor) -> Round to 3 decimal places
+  const coarseDryWeight = parseFloat((b_b0 * materials.coarseDryRoddedUnitWeight).toFixed(3));
+  const coarseVolume = parseFloat((coarseDryWeight / (materials.coarseSpecificGravity * 1000)).toFixed(4));
   
   // Step 7: Water & Air absolute volumes
-  const waterVolume = adjustedWaterVol / 1000;
-  const airVolume = baseAirPct / 100;
+  const waterVolume = parseFloat((adjustedWaterVol / 1000).toFixed(4));
+  const airVolume = parseFloat((baseAirPct / 100).toFixed(4));
+  const airVolumeRounded = parseFloat(airVolume.toFixed(2));
   
-  // Step 8: Fine Aggregate Volume & Weight
-  const occupiedVolume = cementVolume + additiveVolume + coarseVolume + waterVolume + airVolume;
-  const fineVolume = Math.max(0, 1.0 - occupiedVolume);
-  const fineDryWeight = fineVolume * materials.fineSpecificGravity * 1000;
+  // Step 9: Absolute volumes summation (using rounded individual volumes—air volume is rounded to 2 decimal places as requested)
+  const occupiedVolume = parseFloat((cementVolume + additiveVolume + coarseVolume + waterVolume + airVolumeRounded).toFixed(4));
   
-  const totalDryWeight = cementWeight + coarseDryWeight + fineDryWeight + adjustedWaterVol + additiveWeight;
-  const totalDryVolume = cementVolume + coarseVolume + fineVolume + waterVolume + airVolume + additiveVolume;
+  // Step 10: Fine Aggregate Volume -> exact subtraction using rounded sum
+  const fineVolume = parseFloat(Math.max(0, 1.0 - occupiedVolume).toFixed(4));
+  const fineVolumeRounded = parseFloat(fineVolume.toFixed(3));
+  // Work with the 3-decimal rounded volume as requested:
+  const fineDryWeight = parseFloat((fineVolumeRounded * materials.fineSpecificGravity * 1000).toFixed(3));
   
-  // Step 9: Adjust for Moisture in Aggregates (Pesos Húmedos)
-  const fineWetWeight = fineDryWeight * (1 + materials.fineHumidity / 100);
-  const coarseWetWeight = coarseDryWeight * (1 + materials.coarseHumidity / 100);
+  // Totals dry
+  const totalDryWeight = parseFloat((cementWeight + coarseDryWeight + fineDryWeight + adjustedWaterVol + additiveWeight).toFixed(3));
+  const totalDryVolume = parseFloat((cementVolume + coarseVolume + fineVolume + waterVolume + airVolumeRounded + additiveVolume).toFixed(4));
   
-  // Aggregates water contribution (free water)
-  const fineWaterContribution = fineDryWeight * ((materials.fineHumidity - materials.fineAbsorption) / 100);
-  const coarseWaterContribution = coarseDryWeight * ((materials.coarseHumidity - materials.coarseAbsorption) / 100);
-  const totalWaterContribution = fineWaterContribution + coarseWaterContribution;
+  // Step 12: Adjust for Moisture in Aggregates (Pesos Húmedos & Water Contribution)
+  const fineHumidityIncrement = parseFloat((fineDryWeight * (materials.fineHumidity / 100)).toFixed(3));
+  const coarseHumidityIncrement = parseFloat((coarseDryWeight * (materials.coarseHumidity / 100)).toFixed(3));
+  
+  const fineWetWeight = parseFloat((fineDryWeight + fineHumidityIncrement).toFixed(3));
+  const coarseWetWeight = parseFloat((coarseDryWeight + coarseHumidityIncrement).toFixed(3));
+  
+  // Aggregates water contribution (free water) -> Rounded to 3 decimal places
+  const fineWaterContribution = parseFloat((fineDryWeight * ((materials.fineHumidity - materials.fineAbsorption) / 100)).toFixed(3));
+  const coarseWaterContribution = parseFloat((coarseDryWeight * ((materials.coarseHumidity - materials.coarseAbsorption) / 100)).toFixed(3));
+  const totalWaterContribution = parseFloat((fineWaterContribution + coarseWaterContribution).toFixed(3));
   
   // Corrected water to insert in mixer
-  const correctedWaterVol = Math.max(0, adjustedWaterVol - totalWaterContribution);
-  const totalWetWeight = cementWeight + fineWetWeight + coarseWetWeight + correctedWaterVol + additiveWeight;
+  const correctedWaterVol = parseFloat((Math.max(0, adjustedWaterVol - totalWaterContribution)).toFixed(3));
+  const totalWetWeight = parseFloat((cementWeight + fineWetWeight + coarseWetWeight + correctedWaterVol + additiveWeight).toFixed(3));
   
-  // Dry & Wet Proportions relative to unit weight of cement
+  // Step 13: Dry & Wet Proportions relative to 1 Part Cement (By Weight)
+  const cementBags = cementWeight / 42.5;
   const dryProportions = {
     cement: 1,
     fine: parseFloat((fineDryWeight / cementWeight).toFixed(2)),
     coarse: parseFloat((coarseDryWeight / cementWeight).toFixed(2)),
-    water: parseFloat((adjustedWaterVol / cementWeight).toFixed(3)),
+    water: parseFloat((adjustedWaterVol / cementBags).toFixed(2)), // in lt/bag as used in UI comparisons
   };
   
   const wetProportions = {
     cement: 1,
     fine: parseFloat((fineWetWeight / cementWeight).toFixed(2)),
     coarse: parseFloat((coarseWetWeight / cementWeight).toFixed(2)),
-    water: parseFloat((correctedWaterVol / cementWeight).toFixed(3)),
+    water: parseFloat((correctedWaterVol / cementBags).toFixed(2)), // in lt/bag as used in UI comparisons
   };
   
   // Proportions per 1 standard sack of cement (42.5 kg)
   const cementBagCount = 1;
   const bagCementWeight = 42.5;
-  const ratio = bagCementWeight / cementWeight;
   
-  const bagFineWeight = fineWetWeight * ratio;
-  const bagCoarseWeight = coarseWetWeight * ratio;
-  const bagCorrectedWater = correctedWaterVol * ratio;
-  const bagAdditiveWeight = additiveWeight * ratio;
+  // Step 14 Batch quantities calculated exactly from the rounded ratios for ultimate field exactness
+  const fineRatio = parseFloat((fineWetWeight / cementWeight).toFixed(2));
+  const coarseRatio = parseFloat((coarseWetWeight / cementWeight).toFixed(2));
+  const waterPerBag = parseFloat((correctedWaterVol / cementBags).toFixed(2));
   
-  // Additive volume in cc (ml) -> 1 L = 1000 cc
-  // Volume (L) = Weight (kg) / Density (kg/L)
-  // Volume (cc) = Volume (L) * 1000
-  const bagAdditiveVolumeCc = (bagAdditiveWeight / materials.additiveSpecificGravity) * 1000;
+  const bagFineWeight = parseFloat((fineRatio * bagCementWeight).toFixed(3));
+  const bagCoarseWeight = parseFloat((coarseRatio * bagCementWeight).toFixed(3));
+  const bagCorrectedWater = parseFloat(waterPerBag.toFixed(3));
+  
+  const bagAdditiveWeight = materials.hasAdditive 
+    ? parseFloat((bagCementWeight * (materials.additiveDosage / 100)).toFixed(3)) 
+    : 0;
+  
+  const bagAdditiveVolumeCc = materials.hasAdditive
+    ? parseFloat(((bagAdditiveWeight / materials.additiveSpecificGravity) * 1000).toFixed(1))
+    : 0;
   
   // Loose Volume conversions
-  // default to 1520 if undefined (for old saved states or fallback)
   const finePUS = materials.fineLooseUnitWeight || 1520;
   const coarsePUS = materials.coarseLooseUnitWeight || 1420;
   
@@ -226,27 +244,29 @@ export function executeACIMixDesign(
     baseWaterVol,
     baseAirPct,
     adjustedWaterVol,
-    waterCementRatio: parseFloat(waterCementRatio.toFixed(3)),
-    cementWeight: parseFloat(cementWeight.toFixed(2)),
-    cementVolume: parseFloat(cementVolume.toFixed(4)),
-    additiveWeight: parseFloat(additiveWeight.toFixed(2)),
-    additiveVolume: parseFloat(additiveVolume.toFixed(4)),
-    coarseAggregateVolumeFactor: parseFloat(b_b0.toFixed(3)),
-    coarseAggregateDryWeight: parseFloat(coarseDryWeight.toFixed(2)),
-    coarseAggregateVolume: parseFloat(coarseVolume.toFixed(4)),
-    airVolume: parseFloat(airVolume.toFixed(4)),
-    waterVolume: parseFloat(waterVolume.toFixed(4)),
-    fineAggregateVolume: parseFloat(fineVolume.toFixed(4)),
-    fineAggregateDryWeight: parseFloat(fineDryWeight.toFixed(2)),
-    totalDryWeight: parseFloat(totalDryWeight.toFixed(2)),
-    totalDryVolume: parseFloat(totalDryVolume.toFixed(4)),
-    coarseAggregateWetWeight: parseFloat(coarseWetWeight.toFixed(2)),
-    fineAggregateWetWeight: parseFloat(fineWetWeight.toFixed(2)),
-    coarseAggregateWaterContribution: parseFloat(coarseWaterContribution.toFixed(2)),
-    fineAggregateWaterContribution: parseFloat(fineWaterContribution.toFixed(2)),
-    totalWaterContribution: parseFloat(totalWaterContribution.toFixed(2)),
-    correctedWaterVol: parseFloat(correctedWaterVol.toFixed(2)),
-    totalWetWeight: parseFloat(totalWetWeight.toFixed(2)),
+    waterCementRatio,
+    cementWeight,
+    cementVolume,
+    additiveWeight,
+    additiveVolume,
+    coarseAggregateVolumeFactor: b_b0,
+    coarseAggregateDryWeight: coarseDryWeight,
+    coarseAggregateVolume: coarseVolume,
+    airVolume,
+    airVolumeRounded,
+    waterVolume,
+    fineAggregateVolume: fineVolume,
+    fineAggregateVolumeRounded: fineVolumeRounded,
+    fineAggregateDryWeight: fineDryWeight,
+    totalDryWeight,
+    totalDryVolume,
+    coarseAggregateWetWeight: coarseWetWeight,
+    fineAggregateWetWeight: fineWetWeight,
+    coarseAggregateWaterContribution: coarseWaterContribution,
+    fineAggregateWaterContribution: fineWaterContribution,
+    totalWaterContribution,
+    correctedWaterVol,
+    totalWetWeight,
     dryProportions,
     wetProportions,
     oneBagBatch: {

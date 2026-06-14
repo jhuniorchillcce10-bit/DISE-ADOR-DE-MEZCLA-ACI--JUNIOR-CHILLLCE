@@ -55,9 +55,11 @@ export interface MixDesignResult {
   coarseAggregateVolume: number; // m3
   
   airVolume: number; // m3
+  airVolumeRounded: number; // m3
   waterVolume: number; // m3
   
   fineAggregateVolume: number; // m3
+  fineAggregateVolumeRounded: number; // m3
   fineAggregateDryWeight: number; // kg
   
   // Totals dry

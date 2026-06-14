@@ -150,27 +150,27 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
   return (
     <div className="space-y-6 text-slate-800" id="interactive-wizard-container">
       {/* WIZARD TRACKER - NAVIGATION BAR */}
-      <div className="bg-slate-900 text-white rounded-2xl p-4.5 border border-slate-800 shadow-md">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
-          <div className="flex items-center gap-2.5">
-            <span className="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20">
-              <Workflow className="h-5 w-5 text-emerald-400 animate-pulse" />
+      <div className="bg-gradient-to-br from-slate-900 to-slate-950 text-white rounded-3xl p-6 border border-slate-800 shadow-lg">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4.5">
+          <div className="flex items-center gap-3">
+            <span className="p-2.5 bg-emerald-500/10 text-emerald-400 rounded-xl border border-emerald-500/20 shadow-inner">
+              <Workflow className="h-5.5 w-5.5 text-emerald-400 animate-pulse" />
             </span>
             <div>
-              <span className="text-[10px] uppercase font-bold text-emerald-400 tracking-wider">Metodología estandarizada • Junior Chillcce</span>
-              <h2 className="text-sm font-black text-white leading-tight uppercase">Diseño de Mezcla en 15 Pasos Conforme a Norma</h2>
+              <span className="text-[11px] uppercase font-black text-emerald-400 tracking-wider">Metodología estandarizada • Junior Chillcce</span>
+              <h2 className="text-base font-black text-white leading-tight uppercase tracking-wide">Diseño de Mezcla en 15 Pasos Conforme a Norma</h2>
             </div>
           </div>
-          <div className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-right flex items-center gap-2">
+          <div className="bg-slate-850/90 border border-slate-750 rounded-xl px-4 py-2 text-right flex items-center gap-3.5 shadow-sm">
             <div>
-              <span className="block text-[8px] text-slate-400 uppercase font-mono font-bold">Progreso del Asistente</span>
-              <span className="text-xs font-black text-emerald-400 font-mono">Paso {activeStep} de 15 ({Math.round((activeStep / 15) * 100)}%)</span>
+              <span className="block text-[9px] text-slate-400 uppercase font-mono font-bold tracking-wider">Progreso del Asistente</span>
+              <span className="text-sm font-black text-emerald-400 font-mono">Paso {activeStep} de 15 ({Math.round((activeStep / 15) * 100)}%)</span>
             </div>
           </div>
         </div>
 
         {/* HORIZONTAL STEP CHIPS EN GRID RESPONSIVO */}
-        <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-15 gap-1 pt-1 overflow-x-auto">
+        <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-15 gap-1.5 pt-1 overflow-x-auto pb-1 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
           {stepsList.map((step) => {
             const isActive = activeStep === step.id;
             const isCompleted = activeStep > step.id;
@@ -178,24 +178,24 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
               <button
                 key={step.id}
                 onClick={() => setActiveStep(step.id)}
-                className={`py-2 px-1 rounded-lg border text-left transition-all text-xs flex flex-col justify-between ${
+                className={`py-3.5 px-2.5 rounded-xl border text-left transition-all text-sm flex flex-col justify-between shadow-xs cursor-pointer ${
                   isActive
-                    ? "bg-emerald-600 border-emerald-500 text-white shadow-xs font-bold scale-[1.01] z-10"
+                    ? "bg-emerald-600 border-emerald-400 text-white shadow-md font-black scale-[1.02] ring-2 ring-emerald-500/20 z-10"
                     : isCompleted
-                    ? "bg-slate-800/40 border-slate-800 text-emerald-400 hover:bg-slate-800"
-                    : "bg-slate-850 border-slate-800 text-slate-500 hover:bg-slate-850/70"
+                    ? "bg-emerald-950/20 border-emerald-800/40 text-emerald-300 hover:bg-emerald-950/40 hover:border-emerald-600"
+                    : "bg-slate-800 border-slate-750/70 text-slate-400 hover:bg-slate-750/70 hover:text-slate-100 hover:border-slate-650"
                 }`}
-                style={{ minWidth: "100px" }}
+                style={{ minWidth: "125px" }}
               >
-                <div className="flex items-center gap-1.5 mb-1">
-                  <span className={`h-4.5 w-4.5 rounded-full text-[9px] flex items-center justify-center font-bold ${
-                    isActive ? "bg-white text-emerald-700" : isCompleted ? "bg-emerald-500/20 text-emerald-400" : "bg-slate-800 text-slate-500"
+                <div className="flex items-center gap-1.5 mb-1.5">
+                  <span className={`h-5 w-5 rounded-full text-[10px] flex items-center justify-center font-bold build-step-badge ${
+                    isActive ? "bg-white text-emerald-700" : isCompleted ? "bg-emerald-500/20 text-emerald-400 font-extrabold" : "bg-slate-700 text-slate-400"
                   }`}>
                     {step.id}
                   </span>
-                  <span className="font-extrabold text-[9px] tracking-tight truncate">Paso {step.id}</span>
+                  <span className="font-extrabold text-[10.5px] tracking-tight truncate">Paso {step.id}</span>
                 </div>
-                <span className="text-[8px] opacity-80 truncate block leading-none font-medium">
+                <span className="text-[9.5px] opacity-90 truncate block leading-none font-medium">
                   {step.title.split(". ")[1]}
                 </span>
               </button>
@@ -208,7 +208,7 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* LEFT COLUMN: INTERACTIVE INPUT PANEL FOR THIS STEP (5 cols) */}
-        <div className="lg:col-span-5 bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-5 flex flex-col justify-between">
+        <div className="lg:col-span-5 bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-5">
           <div className="space-y-4">
             <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
               <span className="bg-slate-900 text-white font-extrabold text-[10px] px-2.5 py-1 rounded-md">
@@ -838,7 +838,7 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                             INTERPOLACIÓN DETALLADA (f'cr = {fcrVal} kg/cm²)
                           </span>
                           <span className="font-mono bg-white px-1.5 py-0.5 rounded-sm border border-emerald-200 text-emerald-800 font-black">
-                            A/C = {result.waterCementRatio.toFixed(3)}
+                            A/C = {result.waterCementRatio.toFixed(2)}
                           </span>
                         </div>
 
@@ -872,7 +872,7 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                                 A/C = {y1.toFixed(2)} + ({fcrVal - x1} * {(y2 - y1).toFixed(2)}) / {x2 - x1} = {y1.toFixed(2)} + ({( (fcrVal - x1) * (y2 - y1) ).toFixed(4)}) / {x2 - x1}
                               </div>
                               <div className="text-emerald-700 font-extrabold mt-0.5">
-                                A/C = {y1.toFixed(2)} + ({( ((fcrVal - x1) * (y2 - y1)) / (x2 - x1) ).toFixed(4)}) = {result.waterCementRatio.toFixed(4)}
+                                A/C = {y1.toFixed(2)} + ({( ((fcrVal - x1) * (y2 - y1)) / (x2 - x1) ).toFixed(4)}) = {result.waterCementRatio.toFixed(2)}
                               </div>
                             </div>
                           </div>
@@ -922,16 +922,16 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                       <div className="pt-2 font-mono text-[10px] text-slate-700 space-y-1">
                         <div className="flex justify-between items-center bg-amber-50/30 px-2 py-1 rounded-xs">
                           <span>• Volumen Unitario de Agua (Paso 4):</span>
-                          <strong className="text-slate-900">{result.adjustedWaterVol.toFixed(1)} L/m³</strong>
+                          <strong className="text-slate-900">{result.adjustedWaterVol.toFixed(3)} L/m³</strong>
                         </div>
                         <div className="flex justify-between items-center bg-amber-50/30 px-2 py-1 rounded-xs mt-1">
                           <span>• Relación Agua / Cemento (Paso 6):</span>
-                          <strong className="text-slate-900">{result.waterCementRatio.toFixed(3)}</strong>
+                          <strong className="text-slate-900">{result.waterCementRatio.toFixed(2)}</strong>
                         </div>
                         <div className="pt-1.5 border-t border-slate-100 flex justify-between items-center text-[10.5px] font-black text-emerald-900">
                           <span>Resultado:</span>
                           <span className="bg-emerald-100 text-emerald-950 px-2 py-0.5 rounded-sm border border-emerald-200">
-                            {result.adjustedWaterVol.toFixed(1)} / {result.waterCementRatio.toFixed(3)} = {result.cementWeight.toFixed(3)} kg/m³
+                            {result.adjustedWaterVol.toFixed(3)} / {result.waterCementRatio.toFixed(2)} = {result.cementWeight.toFixed(3)} kg/m³
                           </span>
                         </div>
                       </div>
@@ -962,7 +962,7 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                       <div className="flex items-start gap-1 font-medium">
                         <Sparkles className="h-3.5 w-3.5 mt-0.5 text-emerald-600 shrink-0" />
                         <span>
-                          Para la resistencia calculada de <strong className="text-emerald-900">{result.targetStrength} kg/cm²</strong> con un agua de <strong className="text-emerald-900">{result.adjustedWaterVol} L</strong> y A/C de <strong className="text-emerald-900">{result.waterCementRatio}</strong>, el diseño requiere <strong className="text-emerald-800 text-[11px] font-black underline bg-white px-1 py-0.5 rounded-sm border border-emerald-250">{result.cementWeight.toFixed(3)} kg/m³</strong> de cemento, equivalente a <strong className="text-emerald-800 text-[11px] font-black underline bg-white px-1 py-0.5 rounded-sm border border-emerald-250">{(result.cementWeight / 42.5).toFixed(3)} bolsas/m³</strong>.
+                          Para la resistencia calculada de <strong className="text-emerald-900">{result.targetStrength} kg/cm²</strong> con un agua de <strong className="text-emerald-900">{result.adjustedWaterVol.toFixed(3)} L</strong> y A/C de <strong className="text-emerald-900">{result.waterCementRatio.toFixed(2)}</strong>, el diseño requiere <strong className="text-emerald-800 text-[11px] font-black underline bg-white px-1 py-0.5 rounded-sm border border-emerald-250">{result.cementWeight.toFixed(3)} kg/m³</strong> de cemento, equivalente a <strong className="text-emerald-800 text-[11px] font-black underline bg-white px-1 py-0.5 rounded-sm border border-emerald-250">{(result.cementWeight / 42.5).toFixed(3)} bolsas/m³</strong>.
                         </span>
                       </div>
                     </div>
@@ -1172,7 +1172,7 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                             </div>
                             <div className="flex justify-between text-emerald-900 font-extrabold bg-emerald-50 px-1 rounded-sm">
                               <span>Peso Seco de Agregado Grueso:</span>
-                              <span>{result.coarseAggregateDryWeight.toFixed(2)} kg/m³</span>
+                              <span>{result.coarseAggregateDryWeight.toFixed(3)} kg/m³</span>
                             </div>
                           </div>
                         </div>
@@ -1223,7 +1223,7 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                           <div>
                             <span>
                               Módulo b/b₀ obtenido por interpolación: <strong className="text-emerald-900">{xValue.toFixed(2)}</strong>.
-                              Multiplicado por el Peso Unitario Seco Compactado de la piedra (<strong className="text-emerald-900">{materials.coarseDryRoddedUnitWeight.toFixed(1)} kg/m³</strong>), define el peso final seco de la piedra: <strong className="text-emerald-800 text-[11px] font-black underline bg-white px-1 py-0.5 rounded-sm border border-emerald-200">{result.coarseAggregateDryWeight.toFixed(2)} kg/m³</strong>.
+                              Multiplicado por el Peso Unitario Seco Compactado de la piedra (<strong className="text-emerald-900">{materials.coarseDryRoddedUnitWeight.toFixed(1)} kg/m³</strong>), define el peso final seco de la piedra: <strong className="text-emerald-800 text-[11px] font-black underline bg-white px-1 py-0.5 rounded-sm border border-emerald-200">{result.coarseAggregateDryWeight.toFixed(3)} kg/m³</strong>.
                             </span>
                           </div>
                         </div>
@@ -1278,10 +1278,9 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                     PASO 9: CÁLCULO DE VOLÚMENES ABSOLUTOS
                   </label>
                   <p className="text-[10px] text-slate-500 leading-tight mb-3">
-                    Todos los componentes determinados anteriormente son convertidos a volumen absoluto ($m^3$) utilizando la fórmula: 
+                    Todos los componentes determinados anteriormente son convertidos a volumen absoluto (m³) utilizando la fórmula: 
                     <strong className="text-slate-700"> Volumen = Peso / (Gs × 1000)</strong>. Estos datos se arrastran automáticamente de los pasos anteriores.
                   </p>
-
                   {/* FORMULAS GRAPHICS EXACTLY AS IN SLIDES */}
                   <div className="bg-[#fdfaf2] p-4 rounded-lg border border-amber-100 shadow-2xs space-y-3">
                     <span className="block text-[10px] font-black text-amber-900 uppercase tracking-widest flex items-center gap-1">
@@ -1303,7 +1302,7 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                         </div>
                       </div>
                       <div className="text-right text-[10.5px] font-mono font-black text-slate-800">
-                        = {result.cementVolume.toFixed(3)} m³
+                        = {result.cementVolume.toFixed(4)} m³
                       </div>
                     </div>
 
@@ -1321,19 +1320,22 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                         </div>
                       </div>
                       <div className="text-right text-[10.5px] font-mono font-black text-slate-800">
-                        = {result.waterVolume.toFixed(3)} m³
+                        = {result.waterVolume.toFixed(4)} m³
                       </div>
                     </div>
 
                     {/* Aire */}
                     <div className="p-2.5 bg-white rounded-md border border-amber-150/50 space-y-1">
                       <div className="text-[9px] font-bold text-slate-500 uppercase tracking-wider flex justify-between">
-                        <span>• Aire Incorporado/Atrapado</span>
-                        <span className="text-rose-700 font-bold font-mono">Paso 5</span>
+                        <span>• Aire (Paso 5)</span>
+                        <span className="text-rose-700 font-bold font-mono">Redondeado</span>
                       </div>
                       <div className="flex justify-between items-center bg-slate-50/50 p-2 rounded-sm font-mono text-[10px]">
                         <span>Aire: {materials.hasAdditive ? result.baseAirPct : result.baseAirPct}%</span>
-                        <strong className="text-slate-805">= {result.airVolume.toFixed(3)} m³</strong>
+                        <div className="text-right flex flex-col items-end">
+                          <strong className="text-slate-855">= {result.airVolumeRounded.toFixed(2)} m³</strong>
+                          <span className="text-[8px] text-slate-400 font-normal">({result.airVolume.toFixed(4)} m³ unrounded)</span>
+                        </div>
                       </div>
                     </div>
 
@@ -1351,7 +1353,7 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                         </div>
                       </div>
                       <div className="text-right text-[10.5px] font-mono font-black text-slate-800">
-                        = {result.coarseAggregateVolume.toFixed(3)} m³
+                        = {result.coarseAggregateVolume.toFixed(4)} m³
                       </div>
                     </div>
 
@@ -1361,11 +1363,10 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                         <Scale className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
                         ∑ Volúmenes Absolutos conocidos
                       </span>
-                      <span className="bg-white text-emerald-900 border border-emerald-200 px-2 py-0.5 rounded-sm font-mono text-xs">
-                        {(result.cementVolume + result.waterVolume + result.airVolume + result.coarseAggregateVolume + (materials.hasAdditive ? result.additiveVolume : 0)).toFixed(3)} m³
+                      <span className="bg-white text-emerald-900 border border-emerald-250 px-2 py-0.5 rounded-sm font-mono text-xs">
+                        {(result.cementVolume + result.waterVolume + result.airVolumeRounded + result.coarseAggregateVolume + (materials.hasAdditive ? result.additiveVolume : 0)).toFixed(4)} m³
                       </span>
                     </div>
-
                   </div>
 
                   {/* QUICK TUNE SPECIFIC GRAVITIES ARRIVED FROM PREVIOUS STEPS */}
@@ -1453,8 +1454,8 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                           <strong className="text-slate-900">{result.waterVolume.toFixed(4)} m³</strong>
                         </div>
                         <div className="flex justify-between items-center bg-amber-50/30 px-2 py-0.5 rounded-xs">
-                          <span>• Vol. Aire (Paso 9):</span>
-                          <strong className="text-slate-900">{result.airVolume.toFixed(4)} m³</strong>
+                          <span>• Vol. Aire (Paso 5 - Redondeado):</span>
+                          <strong className="text-slate-900">{result.airVolumeRounded.toFixed(2)} m³ <span className="text-[9px] text-slate-400 font-normal">({result.airVolume.toFixed(4)} m³)</span></strong>
                         </div>
                         <div className="flex justify-between items-center bg-amber-50/30 px-2 py-0.5 rounded-xs">
                           <span>• Vol. Piedra (Paso 9):</span>
@@ -1473,23 +1474,28 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                             {(
                               result.cementVolume + 
                               result.waterVolume + 
-                              result.airVolume + 
+                              result.airVolumeRounded + 
                               result.coarseAggregateVolume + 
                               (materials.hasAdditive ? result.additiveVolume : 0)
-                            ).toFixed(4)} m³
+                            ).toFixed(3)} m³
                           </span>
                         </div>
 
                         <div className="pt-1.5 border-t border-slate-150 flex justify-between items-center text-[10.5px] font-black text-emerald-900 bg-emerald-50/50 px-2 py-1 rounded">
                           <span>Vol. Absoluto Fino:</span>
-                          <span>
-                            1.0 - {(
-                              result.cementVolume + 
-                              result.waterVolume + 
-                              result.airVolume + 
-                              result.coarseAggregateVolume + 
-                              (materials.hasAdditive ? result.additiveVolume : 0)
-                            ).toFixed(3)} = {result.fineAggregateVolume.toFixed(3)} m³
+                          <span className="flex flex-col items-end">
+                            <span>
+                              1.0 - {(
+                                result.cementVolume + 
+                                result.waterVolume + 
+                                result.airVolumeRounded + 
+                                result.coarseAggregateVolume + 
+                                (materials.hasAdditive ? result.additiveVolume : 0)
+                              ).toFixed(3)} = <strong className="font-black underline decoration-amber-400">{result.fineAggregateVolume.toFixed(3)} m³</strong>
+                            </span>
+                            <span className="text-[9px] text-amber-900 font-bold mt-0.5 bg-amber-100/50 px-1 rounded-sm">
+                              (Redondeado para diseño = <strong>{result.fineAggregateVolumeRounded.toFixed(3)} m³</strong>)
+                            </span>
                           </span>
                         </div>
                       </div>
@@ -1509,7 +1515,11 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                       <div className="pt-1.5 font-mono text-[10.5px] text-slate-700 space-y-1">
                         <div className="flex justify-between items-center bg-amber-50/30 px-2 py-1 rounded-xs">
                           <span>• Vol. Absoluto Arena:</span>
-                          <strong className="text-slate-900">{result.fineAggregateVolume.toFixed(3)} m³</strong>
+                          <span className="text-right">
+                            <span className="text-[9px] text-slate-500 mr-1">({result.fineAggregateVolume.toFixed(3)} m³)</span>
+                            <strong className="text-indigo-800 font-black">→ {result.fineAggregateVolumeRounded.toFixed(3)} m³</strong>
+                            <span className="text-[8px] block text-slate-400 leading-none">(Redondeado)</span>
+                          </span>
                         </div>
                         <div className="flex justify-between items-center bg-amber-50/30 px-2 py-1 rounded-xs">
                           <span>• Pe (Gs) de Arena (Laboratorio):</span>
@@ -1517,8 +1527,13 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                         </div>
                         <div className="pt-1.5 border-t border-slate-150 flex justify-between items-center text-[10.5px] font-black text-emerald-900 bg-emerald-100/70 px-2 py-1 rounded">
                           <span>Peso Fino Seco:</span>
-                          <span>
-                            {result.fineAggregateVolume.toFixed(3)} × {materials.fineSpecificGravity.toFixed(3)} × 1000 = {result.fineAggregateDryWeight.toFixed(3)} kg/m³
+                          <span className="text-right flex flex-col items-end">
+                            <span>
+                              {result.fineAggregateVolumeRounded.toFixed(3)} × {materials.fineSpecificGravity.toFixed(3)} × 1000 = {result.fineAggregateDryWeight.toFixed(1)} kg/m³
+                            </span>
+                            <span className="text-[8px] text-emerald-750 font-normal leading-none mt-0.5">
+                              * Calculado con volumen redondeado a {result.fineAggregateVolumeRounded.toFixed(3)} m³
+                            </span>
                           </span>
                         </div>
                       </div>
@@ -1528,7 +1543,7 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                       <div className="flex items-start gap-1 font-medium">
                         <Sparkles className="h-3.5 w-3.5 mt-0.5 text-emerald-600 shrink-0" />
                         <span>
-                          La arena requerida para rellenar los espacios remanentes de la pasta y el grueso es de <strong className="text-emerald-800 text-[11px] font-black underline bg-white px-1 py-0.5 rounded-sm border border-emerald-250">{result.fineAggregateDryWeight.toFixed(3)} kg/m³</strong>, con un volumen absoluto de <strong className="text-emerald-800 font-bold">{result.fineAggregateVolume.toFixed(4)} m³</strong>.
+                          La arena requerida para rellenar los espacios remanentes de la pasta y el grueso es de <strong className="text-emerald-800 text-[11px] font-black underline bg-white px-1 py-0.5 rounded-sm border border-emerald-250">{result.fineAggregateDryWeight.toFixed(1)} kg/m³</strong>, con un volumen absoluto de <strong className="text-emerald-800 font-bold">{result.fineAggregateVolume.toFixed(3)} m³</strong> (utilizando <span className="font-black bg-white/70 px-1 rounded">{result.fineAggregateVolumeRounded.toFixed(3)} m³</span> redondeado).
                         </span>
                       </div>
                     </div>
@@ -1986,40 +2001,6 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
               </div>
             )}
           </div>
-
-          {/* NEXT / BACK BUTTON NAVIGATION */}
-          <div className="flex gap-2.5 pt-5 border-t border-slate-100 justify-between mt-6">
-            <button
-              onClick={handleBack}
-              disabled={activeStep === 1}
-              className={`flex items-center gap-1 py-2 px-3 rounded-lg text-xs font-bold border transition-all ${
-                activeStep === 1
-                  ? "text-slate-350 border-slate-150 cursor-not-allowed bg-slate-50"
-                  : "text-slate-700 hover:bg-slate-50 bg-white border-slate-200 cursor-pointer"
-              }`}
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Anterior
-            </button>
-
-            {activeStep < 15 ? (
-              <button
-                onClick={handleNext}
-                className="flex items-center gap-1.5 py-2 px-5 rounded-lg text-xs font-black bg-emerald-600 hover:bg-emerald-500 text-white cursor-pointer shadow-xs"
-              >
-                Siguiente Paso
-                <ArrowRight className="h-4 w-4" />
-              </button>
-            ) : (
-              <button
-                onClick={() => window.print()}
-                className="flex items-center gap-1.5 py-2 px-5 rounded-lg text-xs font-black bg-slate-900 hover:bg-slate-800 text-white cursor-pointer shadow-xs"
-              >
-                <Printer className="h-4 w-4" />
-                Imprimir reporte de Obra
-              </button>
-            )}
-          </div>
         </div>
 
         {/* RIGHT COLUMN: GRAPHICS, ACI TABLES AND FORMULAS (7 cols) */}
@@ -2161,7 +2142,10 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                   <p>• Tipo de Mezcla: {specs.airEntrained ? "Con Aire Incorporado" : "Aire Natural Atrapado"}</p>
                   <p>• Contenido de Aire = <span className="text-emerald-400 font-extrabold">{result.baseAirPct}% del volumen total</span></p>
                   <p className="text-white mt-2.5">
-                    Volumen Neto de Aire = <span className="text-emerald-400 font-black">{result.airVolume} m³/concreto</span>
+                    Volumen Neto de Aire = <span className="text-emerald-400 font-extrabold">{result.airVolume.toFixed(4)} m³/concreto</span>
+                    <span className="text-amber-400 ml-1.5 font-bold block sm:inline mt-1 sm:mt-0">
+                      (Redondeado = <strong className="underline text-emerald-400 font-black">{result.airVolumeRounded.toFixed(2)} m³</strong>; se trabaja con el valor redondeado)
+                    </span>
                   </p>
                 </div>
               </div>
@@ -2242,7 +2226,7 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                   </div>
                   <div className="border-t border-slate-800 mt-2.5 pt-2 flex justify-between font-bold text-xs">
                     <span className="uppercase text-slate-400">Volumen Ocupado Acumulado</span>
-                    <span className="text-emerald-400 font-mono text-sm font-black">{(1.0 - result.fineAggregateVolume).toFixed(4)} m³</span>
+                    <span className="text-emerald-400 font-mono text-sm font-black">{(1.0 - result.fineAggregateVolume).toFixed(3)} m³</span>
                   </div>
                 </div>
               </div>
@@ -2254,9 +2238,16 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                   Deducimos el volumen absoluto disponible de la arena restando la suma total de ingredientes del volumen total de 1.0 m³. Posteriormente multiplicamos este remanente por el Gs de la arena.
                 </p>
                 <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-[11px] space-y-1.5 text-slate-200">
-                  <p className="text-slate-400">// Deducción de agregados finos:</p>
-                  <p>Volumen Libre Arena = 1.0000 - {(1.0 - result.fineAggregateVolume).toFixed(4)} = <span className="text-emerald-400 font-black">{result.fineAggregateVolume.toFixed(4)} m³</span></p>
-                  <p className="pt-2 border-t border-slate-800 mt-2">Peso Seco Arena = Volumen Libre × Gs_Arena × 1000</p>
+                  <p className="text-slate-450">// Deducción de agregados finos:</p>
+                  <p>
+                    Volumen Libre Arena = 1.000 - {(1.0 - result.fineAggregateVolume).toFixed(3)} = <span className="text-emerald-400 font-black">{result.fineAggregateVolume.toFixed(3)} m³</span>
+                    <span className="block text-[9px] text-slate-400 mt-1">
+                      (Redondeado para diseño a <strong className="text-emerald-400 font-black">{result.fineAggregateVolumeRounded.toFixed(3)} m³</strong>)
+                    </span>
+                  </p>
+                  <p className="pt-2 border-t border-slate-800 mt-2">
+                    Peso Seco Arena = Vol. Redondeado ({result.fineAggregateVolumeRounded.toFixed(3)}) × Gs_Arena × 1000
+                  </p>
                   <p className="text-white text-xs font-extrabold text-[12px]">
                     Peso Seco de Arena = <span className="text-emerald-400 font-black">{result.fineAggregateDryWeight.toFixed(1)} kg/m³</span>
                   </p>
@@ -2816,25 +2807,28 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
               const additiveWeight = result.additiveWeight;
               const additiveSpGr = materials.additiveSpecificGravity || 1.15;
 
-              // NET values (without waste)
-              const netCementKgs = cementWeight * calculatedVolume;
+              // Rounded volume to 2 decimals as requested:
+              const roundedVolumeValue = parseFloat(calculatedVolume.toFixed(2));
+
+              // NET values (without waste) - calculated using roundedVolumeValue (2 decimal places)
+              const netCementKgs = cementWeight * roundedVolumeValue;
               const netCementBags = netCementKgs / 42.5;
 
-              const netWaterLiters = waterCorrected * calculatedVolume;
+              const netWaterLiters = waterCorrected * roundedVolumeValue;
               const netWaterCans = netWaterLiters / 20;
 
-              const netFineWetKgs = fineWet * calculatedVolume;
+              const netFineWetKgs = fineWet * roundedVolumeValue;
               const netFineLooseM3 = netFineWetKgs / (materials.fineLooseUnitWeight || 1520);
               const netFineCans = (netFineLooseM3 * 1000) / 20;
 
-              const netCoarseWetKgs = coarseWet * calculatedVolume;
+              const netCoarseWetKgs = coarseWet * roundedVolumeValue;
               const netCoarseLooseM3 = netCoarseWetKgs / (materials.coarseLooseUnitWeight || 1420);
               const netCoarseCans = (netCoarseLooseM3 * 1000) / 20;
 
-              const netAdditiveKgs = additiveWeight * calculatedVolume;
+              const netAdditiveKgs = additiveWeight * roundedVolumeValue;
               const netAdditiveCc = (netAdditiveKgs / additiveSpGr) * 1000;
 
-              // WASTE values (Total including waste)
+              // WASTE values (Total including waste) - calculated using roundedVolumeValue (2 decimal places)
               const wasteFactor = 1 + wastePct / 100;
               const totalCementKgsLocal = netCementKgs * wasteFactor;
               const totalCementBagsLocal = totalCementKgsLocal / 42.5;
@@ -2897,6 +2891,9 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                             {rectQty > 1 && <p>Elementos: <span className="text-white font-extrabold">N = {rectQty}</span></p>}
                             <p className="border-t border-slate-850/60 mt-1.5 pt-1.5 text-emerald-400 font-extrabold text-[11px]">
                               Volumen: V = {rectWidth.toFixed(2)} x {rectLength.toFixed(2)} x {rectThickness.toFixed(2)} {rectQty > 1 ? `x ${rectQty}` : ""} = <span className="bg-emerald-950/80 text-white px-1.5 py-0.5 rounded border border-emerald-500/30">{calculatedVolume.toFixed(4)} m³</span>
+                              <span className="text-amber-400 ml-1.5 font-bold block sm:inline mt-1 sm:mt-0">
+                                (Redondeado = <strong className="underline text-emerald-400 font-black">{roundedVolumeValue.toFixed(2)} m³</strong>; se trabaja con el valor redondeado)
+                              </span>
                             </p>
                           </>
                         )}
@@ -2907,6 +2904,9 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                             <p>Columnas: <span className="text-white font-extrabold">N = {colQty} unidades</span></p>
                             <p className="border-t border-slate-850/60 mt-1.5 pt-1.5 text-emerald-400 font-extrabold text-[11px]">
                               Volumen: V = (π x D² / 4) x h x N = <span className="bg-emerald-950/80 text-white px-1.5 py-0.5 rounded border border-emerald-500/30">{calculatedVolume.toFixed(4)} m³</span>
+                              <span className="text-amber-400 ml-1.5 font-bold block sm:inline mt-1 sm:mt-0">
+                                (Redondeado = <strong className="underline text-emerald-400 font-black">{roundedVolumeValue.toFixed(2)} m³</strong>; se trabaja con el valor redondeado)
+                              </span>
                             </p>
                           </>
                         )}
@@ -2917,13 +2917,19 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                             <p>Probetas: <span className="text-white font-extrabold">N = {cylQty} cilindros</span></p>
                             <p className="border-t border-slate-850/60 mt-1.5 pt-1.5 text-emerald-400 font-extrabold text-[11px]">
                               Volumen: V = 0.0053 m³ x {cylQty} cilindros = <span className="bg-emerald-950/80 text-white px-1.5 py-0.5 rounded border border-emerald-500/30">{calculatedVolume.toFixed(4)} m³</span>
+                              <span className="text-amber-400 ml-1.5 font-bold block sm:inline mt-1 sm:mt-0">
+                                (Redondeado = <strong className="underline text-emerald-400 font-black">{roundedVolumeValue.toFixed(2)} m³</strong>; se trabaja con el valor redondeado)
+                              </span>
                             </p>
                           </>
                         )}
                         {geometryType === "direct" && (
                           <>
                             <p className="text-emerald-400 font-extrabold text-[11px]">
-                              Volumen directo especificado: V = <span className="bg-emerald-950/80 text-white px-1.5 py-0.5 rounded border border-emerald-500/30">{calculatedVolume.toFixed(3)} m³</span>
+                              Volumen directo especificado: V = <span className="bg-emerald-950/80 text-white px-1.5 py-0.5 rounded border border-emerald-500/30">{calculatedVolume.toFixed(4)} m³</span>
+                              <span className="text-amber-400 ml-1.5 font-bold block sm:inline mt-1 sm:mt-0">
+                                (Redondeado = <strong className="underline text-emerald-400 font-black">{roundedVolumeValue.toFixed(2)} m³</strong>; se trabaja con el valor redondeado)
+                              </span>
                             </p>
                           </>
                         )}
@@ -2939,29 +2945,29 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                         <div className="flex items-center gap-1.5">
                           <span className="text-amber-500 text-xs">➢</span>
                           <span className="w-32 text-slate-400">Cant. Cemento</span>
-                          <span className="text-slate-500">: {cementWeight.toFixed(0)} x {calculatedVolume.toFixed(4)} = </span>
+                          <span className="text-slate-500">: {cementWeight.toFixed(2)} x {roundedVolumeValue.toFixed(2)} = </span>
                           <span className="text-white font-black text-[11px] ml-auto">{netCementKgs.toFixed(2)} Kg</span>
-                          <span className="text-[9.5px] text-slate-450 ml-1">({netCementBags.toFixed(1)} bolsas)</span>
+                          <span className="text-[9.5px] text-slate-450 ml-1">({netCementBags.toFixed(2)} bolsas)</span>
                         </div>
 
                         <div className="flex items-center gap-1.5">
                           <span className="text-amber-500 text-xs">➢</span>
                           <span className="w-32 text-slate-400">Cant. Agua</span>
-                          <span className="text-slate-500">: {waterCorrected.toFixed(0)} x {calculatedVolume.toFixed(4)} = </span>
+                          <span className="text-slate-500">: {waterCorrected.toFixed(2)} x {roundedVolumeValue.toFixed(2)} = </span>
                           <span className="text-emerald-400 font-black text-[11px] ml-auto">{netWaterLiters.toFixed(2)} lt</span>
                         </div>
 
                         <div className="flex items-center gap-1.5">
                           <span className="text-amber-500 text-xs">➢</span>
                           <span className="w-32 text-slate-400">Cant. Agregado Fino</span>
-                          <span className="text-slate-500">: {fineWet.toFixed(0)} x {calculatedVolume.toFixed(4)} = </span>
+                          <span className="text-slate-500">: {fineWet.toFixed(2)} x {roundedVolumeValue.toFixed(2)} = </span>
                           <span className="text-white font-black text-[11px] ml-auto">{netFineWetKgs.toFixed(2)} Kg</span>
                         </div>
 
                         <div className="flex items-center gap-1.5">
                           <span className="text-amber-500 text-xs">➢</span>
                           <span className="w-32 text-slate-400">Cant. Agregado Grueso</span>
-                          <span className="text-slate-500">: {coarseWet.toFixed(0)} x {calculatedVolume.toFixed(4)} = </span>
+                          <span className="text-slate-500">: {coarseWet.toFixed(2)} x {roundedVolumeValue.toFixed(2)} = </span>
                           <span className="text-white font-black text-[11px] ml-auto">{netCoarseWetKgs.toFixed(2)} Kg</span>
                         </div>
 
@@ -2969,7 +2975,7 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                           <div className="flex items-center gap-1.5 text-amber-400 border-t border-slate-850/60 pt-2">
                             <span className="text-amber-500 text-xs">➢</span>
                             <span className="w-32">Cant. Aditivo</span>
-                            <span className="text-slate-500">: {additiveWeight.toFixed(2)} x {calculatedVolume.toFixed(4)} = </span>
+                            <span className="text-slate-500">: {additiveWeight.toFixed(2)} x {roundedVolumeValue.toFixed(2)} = </span>
                             <span className="font-bold ml-auto">{netAdditiveKgs.toFixed(2)} Kg</span>
                             <span className="text-[9.5px] ml-1">({(netAdditiveCc / 1000).toFixed(2)} lt)</span>
                           </div>
@@ -2989,7 +2995,7 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                           <span className="text-slate-500">: {netCementKgs.toFixed(2)} Kg x {wasteFactor.toFixed(2)} = </span>
                           <span className="text-white font-black text-[11px] ml-auto">{totalCementKgsLocal.toFixed(2)} Kg</span>
                           <span className="text-[9.5px] font-bold bg-amber-500/10 px-1.5 py-0.5 rounded text-amber-400 border border-amber-500/10 ml-2">
-                            {Math.ceil(totalCementBagsLocal)} Bolsas
+                            {totalCementBagsLocal.toFixed(2)} Bolsas ({Math.ceil(totalCementBagsLocal)} para obra)
                           </span>
                         </div>
 
@@ -2999,7 +3005,7 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                           <span className="text-slate-500">: {netWaterLiters.toFixed(2)} lt x {wasteFactor.toFixed(2)} = </span>
                           <span className="text-emerald-400 font-black text-[11px] ml-auto">{totalWaterLitersLocal.toFixed(2)} lt</span>
                           <span className="text-[9.5px] font-bold bg-emerald-500/10 px-1.5 py-0.5 rounded text-emerald-400 border border-emerald-500/10 ml-2">
-                            {totalWaterCansLocal.toFixed(1)} Baldes
+                            {totalWaterCansLocal.toFixed(2)} Baldes
                           </span>
                         </div>
 
@@ -3009,7 +3015,7 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                           <span className="text-slate-500">: {netFineWetKgs.toFixed(2)} Kg x {wasteFactor.toFixed(2)} = </span>
                           <span className="text-white font-black text-[11px] ml-auto">{totalFineWetKgsLocal.toFixed(2)} Kg</span>
                           <span className="text-[9.5px] font-bold bg-slate-900 px-1.5 py-0.5 rounded text-slate-450 border border-slate-800 ml-2">
-                            {totalFineCansLocal.toFixed(1)} Baldes
+                            {totalFineCansLocal.toFixed(2)} Baldes
                           </span>
                         </div>
 
@@ -3019,7 +3025,7 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                           <span className="text-slate-500">: {netCoarseWetKgs.toFixed(2)} Kg x {wasteFactor.toFixed(2)} = </span>
                           <span className="text-white font-black text-[11px] ml-auto">{totalCoarseWetKgsLocal.toFixed(2)} Kg</span>
                           <span className="text-[9.5px] font-bold bg-slate-900 px-1.5 py-0.5 rounded text-slate-420 border border-slate-800 ml-2">
-                            {totalCoarseCansLocal.toFixed(1)} Baldes
+                            {totalCoarseCansLocal.toFixed(2)} Baldes
                           </span>
                         </div>
 
@@ -3030,7 +3036,7 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                             <span className="text-slate-500">: {netAdditiveKgs.toFixed(2)} Kg x {wasteFactor.toFixed(2)} = </span>
                             <span className="font-bold ml-auto">{totalAdditiveKgsLocal.toFixed(2)} Kg</span>
                             <span className="text-[9.5px] font-bold bg-amber-500/10 px-1.5 py-0.5 rounded text-amber-500 border border-amber-500/10 ml-2">
-                              {totalAdditiveCcLocal.toFixed(0)} mL (cc)
+                              {totalAdditiveCcLocal.toFixed(2)} mL (cc)
                             </span>
                           </div>
                         )}
@@ -3040,7 +3046,7 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                   </div>
 
                   <div className="p-3 bg-slate-900 rounded-xl border border-slate-800 text-[10px] text-slate-400 leading-normal font-sans">
-                    <strong>Resumen final de compra (con desperdicios):</strong> Para vaciar la estructura completa se precisan aproximadamente <strong>{Math.ceil(totalCementBagsLocal)} bolsas de cemento de 42.5kg</strong>, <strong>{totalFineCansLocal.toFixed(1)} baldes sueltos de arena húmeda</strong>, <strong>{totalCoarseCansLocal.toFixed(1)} baldes sueltos de piedra chancada</strong> (botes de obra Standard de 20L), y un suministro de agua de <strong>{totalWaterLitersLocal.toFixed(0)} litros</strong> (que equivale a {totalWaterCansLocal.toFixed(1)} baldes).
+                    <strong>Resumen final de compra (con desperdicios):</strong> Para vaciar la estructura completa se precisan aproximadamente <strong>{Math.ceil(totalCementBagsLocal)} bolsas de cemento de 42.5kg</strong> (exacto: {totalCementBagsLocal.toFixed(2)} bolsas), <strong>{totalFineCansLocal.toFixed(2)} baldes sueltos de arena húmeda</strong>, <strong>{totalCoarseCansLocal.toFixed(2)} baldes sueltos de piedra chancada</strong> (botes de obra Standard de 20L), y un suministro de agua de <strong>{totalWaterLitersLocal.toFixed(2)} litros</strong> (que equivale a {totalWaterCansLocal.toFixed(2)} baldes).
                   </div>
                 </div>
               );
@@ -3100,7 +3106,7 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
                   <div className="flex flex-col items-center"><div className="h-2 w-2 rounded bg-slate-700 mb-0.5" /><span>Cto: {result.cementVolume.toFixed(4)} m³</span></div>
                   <div className="flex flex-col items-center"><div className="h-2 w-2 rounded bg-blue-500 mb-0.5" /><span>Agua: {result.waterVolume.toFixed(4)} m³</span></div>
                   <div className="flex flex-col items-center"><div className="h-2 w-2 rounded bg-slate-400 mb-0.5" /><span>Piedra: {result.coarseAggregateVolume.toFixed(4)} m³</span></div>
-                  <div className="flex flex-col items-center"><div className="h-2 w-2 rounded bg-teal-500 mb-0.5" /><span>Arena: {result.fineAggregateVolume.toFixed(4)} m³</span></div>
+                  <div className="flex flex-col items-center"><div className="h-2 w-2 rounded bg-teal-500 mb-0.5" /><span>Arena: {result.fineAggregateVolume.toFixed(3)} m³</span></div>
                   <div className="flex flex-col items-center"><div className="h-2 w-2 rounded bg-slate-800 mb-0.5" /><span>Aire: {result.airVolume.toFixed(4)} m³</span></div>
                 </div>
               </div>
@@ -3164,6 +3170,44 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
           </div>
         </div>
 
+      </div>
+
+      {/* NEXT/BACK BUTTON NAVIGATION AT THE VERY BOTTOM */}
+      <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-slate-200 justify-between items-center mt-8 bg-slate-50 p-5 rounded-2xl border border-slate-150">
+        <button
+          onClick={handleBack}
+          disabled={activeStep === 1}
+          className={`flex items-center justify-center gap-2 py-3 px-6 w-full sm:w-auto rounded-xl text-sm font-black border transition-all shadow-xs ${
+            activeStep === 1
+              ? "text-slate-400 border-slate-200 cursor-not-allowed bg-slate-100/60"
+              : "text-slate-700 hover:bg-slate-100 bg-white border-slate-250 hover:border-slate-350 cursor-pointer"
+          }`}
+        >
+          <ArrowLeft className="h-5 w-5" />
+          Atrás (Paso Anterior)
+        </button>
+
+        <div className="text-xs text-slate-450 font-mono font-bold uppercase hidden md:block">
+          Paso {activeStep} de 15 • {Math.round((activeStep / 15) * 100)}% Completado
+        </div>
+
+        {activeStep < 15 ? (
+          <button
+            onClick={handleNext}
+            className="flex items-center justify-center gap-2.5 py-4 px-10 w-full sm:w-auto rounded-xl text-sm md:text-base font-black bg-emerald-600 hover:bg-emerald-500 text-white cursor-pointer shadow-md hover:shadow-lg transform active:scale-98 transition-all"
+          >
+            Siguiente Paso ({activeStep + 1}/15)
+            <ArrowRight className="h-5 w-5" />
+          </button>
+        ) : (
+          <button
+            onClick={() => window.print()}
+            className="flex items-center justify-center gap-2.5 py-4 px-10 w-full sm:w-auto rounded-xl text-sm md:text-base font-black bg-slate-900 hover:bg-slate-800 text-white cursor-pointer shadow-md hover:shadow-lg transform active:scale-98 transition-all"
+          >
+            <Printer className="h-5 w-5" />
+            Imprimir reporte de Obra
+          </button>
+        )}
       </div>
     </div>
   );
