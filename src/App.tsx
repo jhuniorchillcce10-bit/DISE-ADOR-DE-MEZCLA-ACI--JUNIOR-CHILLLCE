@@ -2,38 +2,22 @@ import React, { useState, useEffect } from "react";
 import { MaterialProperties, DesignSpecifications, SavedProject } from "./types";
 import { PRESETS } from "./presets";
 import { executeACIMixDesign } from "./calculations";
-import { MaterialForm } from "./components/MaterialForm";
-import { SpecificationForm } from "./components/SpecificationForm";
-import { ResultsDisplay } from "./components/ResultsDisplay";
-import { StepByStepCalculations } from "./components/StepByStepCalculations";
-import { Visualizations } from "./components/Visualizations";
-import { ExcelSimulator } from "./components/ExcelSimulator";
 import { InteractiveWizard } from "./components/InteractiveWizard";
 import { JocqLogo } from "./components/JocqLogo";
+import { CalculationTemplates } from "./components/CalculationTemplates";
 import {
-  FileCode,
   Download,
-  BookOpen,
-  Scale,
   Sparkles,
-  RotateCcw,
   Save,
   CheckCircle,
-  HelpCircle,
-  Play,
   Hammer,
-  ClipboardList,
-  AlertCircle,
   FolderOpen,
   Trash2,
-  ExternalLink,
-  Settings,
-  FileSpreadsheet,
   Shield,
   Building,
   Compass,
-  Printer,
-  Workflow
+  Workflow,
+  ClipboardList
 } from "lucide-react";
 
 export default function App() {
@@ -43,7 +27,7 @@ export default function App() {
   const [specs, setSpecs] = useState<DesignSpecifications>(defaultPreset.specs);
   
   // App variables
-  const [activeTab, setActiveTab] = useState<"wizard" | "summary" | "excel" | "math" | "charts">("wizard");
+  const [activeTab, setActiveTab] = useState<"wizard" | "templates">("wizard");
   const [projectName, setProjectName] = useState<string>("Mi Diseño de Mezcla");
   const [companyName, setCompanyName] = useState<string>("JUNIOR CC");
   const [companyLogoIcon, setCompanyLogoIcon] = useState<"shield" | "building" | "compass" | "hammer" | "jocq">("jocq");
@@ -200,17 +184,17 @@ export default function App() {
               Software Desarrollado por JHUNIOR CHILLCCE QUILCA
             </div>
             <h2 className="text-sm font-bold text-slate-100 flex items-center gap-1.5">
-              <span>Diseñador Avanzado de Mezclas de Concreto - Método ACI 211.1</span>
+              <span>Plataforma de Ingeniería Civil: Dosificación ACI 211.1 & Plantillas RNE</span>
             </h2>
             <p className="text-[11px] text-slate-300 leading-relaxed md:w-[95%]">
-              Esta aplicación inteligente ha sido diseñada y desarrollada por <span className="font-black text-white">JHUNIOR CHILLCCE QUILCA</span>, basada estrictamente en las directrices del manual del <strong>American Concrete Institute (ACI 211.1)</strong> para el diseño de mezclas de concreto de peso normal por el método de volúmenes absolutos. Su fin supremo es automatizar el cálculo preciso de proporciones de materiales (cemento, agua, agregado fino y grueso) requeridos para alcanzar una resistencia de diseño especificada (f'c), incorporando el análisis para aditivos plastificantes / reductores de agua y realizando las correcciones automáticas inmediatas por humedad y absorción de los agregados en obra.
+              Esta plataforma profesional e inteligente ha sido diseñada y desarrollada por <span className="font-black text-white">JHUNIOR CHILLCCE QUILCA</span>, integrando el diseño avanzado de mezclas de concreto bajo las directrices del manual del <strong>American Concrete Institute (ACI 211.1)</strong> con una completa suite de plantillas de cálculo automatizadas en cumplimiento estricto del <strong>Reglamento Nacional de Edificaciones (RNE)</strong> del Perú (Normas de Carga E.020, Sismorresistente E.030, Suelos y Cimentaciones E.050, Concreto Armado E.060 y Albañilería E.070). Optimiza de forma interactiva la dosificación, ajustes por aditivo y corrección de humedad, junto con rigurosos análisis de longitudes de desarrollo, metrado de acero, rendimiento de ladrillos, capacidad portante, juntas sísmicas y diseño geométrico-cargado de escaleras.
             </p>
           </div>
           <div className="flex-shrink-0 bg-slate-800 border border-slate-700 p-2.5 rounded-lg text-xs space-y-1 text-center md:text-left min-w-[200px]">
-            <p className="font-semibold text-emerald-400">Especificaciones Técnicas:</p>
-            <p className="text-[10px] text-slate-300">• Norma de Origen: ACI 211.1</p>
-            <p className="text-[10px] text-slate-300">• Optimización: Reducción por Aditivo</p>
-            <p className="text-[10px] text-slate-300">• Precisión: Corrección por Humedad</p>
+            <p className="font-semibold text-emerald-400">Estándares y Normas:</p>
+            <p className="text-[10px] text-slate-300">• Concreto: ACI 211.1 / RNE E.060</p>
+            <p className="text-[10px] text-slate-300">• Estructural: RNE E.020 - E.070 / SENCICO</p>
+            <p className="text-[10px] text-slate-300">• Geotecnia: RNE E.050 (Sq. Terzaghi)</p>
           </div>
         </div>
       </div>
@@ -229,26 +213,6 @@ export default function App() {
       {/* CORE APPLICATION CONTAINER */}
       <main className="max-w-7xl mx-auto px-4 pt-6 sm:px-6 lg:px-8">
         
-        {/* PRESET QUICK ACCENTS */}
-        <section className="bg-white p-4 rounded-2xl border border-slate-100 shadow-xs mb-6 print:hidden">
-          <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
-            <ClipboardList className="h-4 w-4 text-emerald-600" />
-            Cargar Plantillas Rápidas (Presets de Mezcla)
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            {PRESETS.map((p) => (
-              <button
-                key={p.id}
-                onClick={() => handleLoadPreset(p.id)}
-                className="text-left bg-slate-50 hover:bg-emerald-50 hover:border-emerald-200 border border-slate-100 p-3 rounded-xl transition-all group cursor-pointer"
-              >
-                <p className="font-bold text-xs text-slate-800 group-hover:text-emerald-900 line-clamp-1">{p.name}</p>
-                <p className="text-[10px] text-slate-400 mt-1 line-clamp-1 group-hover:text-emerald-800/80">{p.description}</p>
-              </button>
-            ))}
-          </div>
-        </section>
-
         {/* GLOBAL TABS SELECTOR */}
         <div id="global-tabs-bar" className="flex border-b border-slate-200 pb-3 justify-between items-center mb-6 print:hidden">
           <div className="flex gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200 flex-wrap">
@@ -258,39 +222,15 @@ export default function App() {
               className={`px-3.5 py-2 text-xs font-black uppercase rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${activeTab === "wizard" ? "bg-emerald-600 text-white shadow-xs" : "text-slate-600 hover:bg-slate-200"}`}
             >
               <Workflow className="h-4 w-4" />
-              Asistente Paso a Paso
+              Diseñador de Mezcla ACI
             </button>
             <button
-              id="tab-excel-btn"
-              onClick={() => setActiveTab("excel")}
-              className={`px-3.5 py-2 text-xs font-black uppercase rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${activeTab === "excel" ? "bg-slate-900 text-white shadow-xs" : "text-slate-600 hover:bg-slate-200"}`}
+              id="tab-templates-btn"
+              onClick={() => setActiveTab("templates")}
+              className={`px-3.5 py-2 text-xs font-black uppercase rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${activeTab === "templates" ? "bg-indigo-600 text-white shadow-xs" : "text-slate-600 hover:bg-slate-200"}`}
             >
-              <FileSpreadsheet className="h-4 w-4" />
-              Planilla Excel
-            </button>
-            <button
-              id="tab-summary-btn"
-              onClick={() => setActiveTab("summary")}
-              className={`px-3.5 py-2 text-xs font-black uppercase rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${activeTab === "summary" ? "bg-slate-900 text-white shadow-xs" : "text-slate-600 hover:bg-slate-200"}`}
-            >
-              <Scale className="h-4 w-4" />
-              Dosificación de Obra
-            </button>
-            <button
-              id="tab-math-btn"
-              onClick={() => setActiveTab("math")}
-              className={`px-3.5 py-2 text-xs font-black uppercase rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${activeTab === "math" ? "bg-slate-900 text-white shadow-xs" : "text-slate-600 hover:bg-slate-200"}`}
-            >
-              <BookOpen className="h-4 w-4" />
-              Memoria de Cálculo
-            </button>
-            <button
-              id="tab-charts-btn"
-              onClick={() => setActiveTab("charts")}
-              className={`px-3.5 py-2 text-xs font-black uppercase rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${activeTab === "charts" ? "bg-slate-900 text-white shadow-xs" : "text-slate-600 hover:bg-slate-200"}`}
-            >
-              <FileCode className="h-4 w-4" />
-              Gráficos
+              <Hammer className="h-4 w-4" />
+              Plantillas para Cálculo
             </button>
           </div>
 
@@ -317,245 +257,136 @@ export default function App() {
             />
           </div>
         ) : (
-          <div id="workbench-split-grid" className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-            {/* LEFT PANEL - FORMS / INPUTS (5 cols) */}
-            <section className="lg:col-span-5 space-y-6 print:hidden">
-              <div className="bg-slate-900 text-white px-4 py-3 rounded-xl flex justify-between items-center shadow-xs">
-                <h2 className="text-xs font-extrabold uppercase tracking-widest flex items-center gap-1.5 text-emerald-400">
-                  <Settings className="h-4 w-4 animate-spin-slow" />
-                  Parámetros de Entrada (In)
-                </h2>
-                <span className="text-[9px] text-slate-400 font-mono">Modo Dinámico</span>
-              </div>
-
-              {/* BRANDING PERSONALIZER */}
-              <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
-                <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3 flex items-center gap-1.5 border-b border-slate-100 pb-2">
-                  <Shield className="h-4 w-4 text-emerald-600 animate-pulse" />
-                  Logotipo y Membrete Personalizado
-                </h3>
-                <div className="space-y-3">
-                  <div>
-                    <label className="block text-[9px] uppercase font-extrabold text-slate-400 mb-1">Nombre de la Empresa</label>
-                    <input
-                      type="text"
-                      value={companyName}
-                      onChange={(e) => setCompanyName(e.target.value)}
-                      className="w-full bg-slate-50 text-slate-800 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs focus:outline-hidden focus:ring-1 focus:ring-emerald-500 font-semibold"
-                      placeholder="Ej. CHILLCCE INGENIEROS S.A.C."
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[9px] uppercase font-extrabold text-slate-400 mb-1">Elegir Icono Corporativo</label>
-                    <div className="grid grid-cols-5 gap-1.5">
-                      {[
-                        { id: "jocq", label: "Logo JOCQ", renderIcon: (cls: string) => <JocqLogo className={cls} showText={false} showCel={false} /> },
-                        { id: "building", label: "Edificio", renderIcon: (cls: string) => <Building className={cls} /> },
-                        { id: "shield", label: "Escudo", renderIcon: (cls: string) => <Shield className={cls} /> },
-                        { id: "compass", label: "Brújula", renderIcon: (cls: string) => <Compass className={cls} /> },
-                        { id: "hammer", label: "Martillo", renderIcon: (cls: string) => <Hammer className={cls} /> },
-                      ].map((item) => {
-                        const isSelected = companyLogoIcon === item.id;
-                        return (
-                          <button
-                            key={item.id}
-                            type="button"
-                            onClick={() => setCompanyLogoIcon(item.id as any)}
-                            className={`py-1.5 px-1 rounded-lg border text-center flex flex-col items-center gap-1 cursor-pointer transition-all ${
-                              isSelected
-                                ? "bg-emerald-50 border-emerald-500 text-emerald-700 font-black scale-102"
-                                : "bg-slate-50 border-slate-200 text-slate-500 hover:bg-slate-100"
-                            }`}
-                          >
-                            {item.renderIcon("h-3.5 w-3.5")}
-                            <span className="text-[8px] truncate w-full">{item.label}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* MATERIAL PROPERTIES */}
-              <div id="material-properties-section">
-                <div className="flex items-center gap-2 mb-3 px-1">
-                  <span className="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded-full font-bold">Paso 1</span>
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Propiedades de Materiales</span>
-                </div>
-                <MaterialForm materials={materials} onChange={setMaterials} />
-              </div>
-
-              {/* DESIGN SPECIFICATIONS */}
-              <div id="design-specifications-section">
-                <div className="flex items-center gap-2 mb-3 mt-6 px-1">
-                  <span className="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded-full font-bold">Paso 2</span>
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Requerimientos de Diseño</span>
-                </div>
-                <SpecificationForm specs={specs} onChange={setSpecs} />
-              </div>
-            </section>
-
-            {/* RIGHT PANEL - CALCULATION SUMMARY & RESULTS (7 cols) */}
-            <section className="lg:col-span-12 xl:col-span-7 bg-white p-4 sm:p-6 rounded-2xl border border-slate-100 shadow-xs print:p-0 print:border-none print:shadow-none">
-              {/* TAB CONTAINER CONTENT */}
-              <div>
-                {activeTab === "excel" && (
-                  <div id="excel-tab-content" className="animate-fade-in">
-                    <ExcelSimulator
-                      materials={materials}
-                      specs={specs}
-                      result={calculationResult}
-                      projectName={projectName}
-                    />
-                  </div>
-                )}
-
-                {activeTab === "summary" && (
-                  <div id="summary-tab-content" className="animate-fade-in">
-                    <ResultsDisplay result={calculationResult} />
-                  </div>
-                )}
-
-                {activeTab === "math" && (
-                  <div id="math-tab-content" className="animate-fade-in">
-                    <StepByStepCalculations materials={materials} specs={specs} result={calculationResult} />
-                  </div>
-                )}
-
-                {activeTab === "charts" && (
-                  <div id="charts-tab-content" className="animate-fade-in">
-                    <Visualizations result={calculationResult} />
-                  </div>
-                )}
-              </div>
-            </section>
+          <div id="templates-viewport" className="animate-fade-in w-full">
+            <CalculationTemplates />
           </div>
         )}
 
       </main>
 
       {/* PRINT-ONLY VISUAL REPORT LAYOUT */}
-      <div id="print-only-layout" className="hidden print:block max-w-4xl mx-auto bg-white p-12 text-slate-900 border border-slate-300 rounded-lg shadow-xs">
-        <div className="flex justify-between items-center border-b-2 border-slate-950 pb-5 mb-8">
-          <div className="flex items-center gap-4 text-left">
-            <div className={companyLogoIcon === "jocq" ? "bg-white p-1 rounded-xl" : "bg-slate-950 text-white rounded-xl p-3 flex items-center justify-center"}>
-              {companyLogoIcon === "jocq" ? (
-                <JocqLogo className="h-24 w-24" showText={true} showCel={true} theme="light" />
-              ) : (
-                renderLogoIcon("h-6 w-6 text-white")
+      {activeTab !== "templates" && (
+        <div id="print-only-layout" className="hidden print:block max-w-4xl mx-auto bg-white p-12 text-slate-900 border border-slate-300 rounded-lg shadow-xs">
+          <div className="flex justify-between items-center border-b-2 border-slate-950 pb-5 mb-8">
+            <div className="flex items-center gap-4 text-left">
+              <div className={companyLogoIcon === "jocq" ? "bg-white p-1 rounded-xl" : "bg-slate-950 text-white rounded-xl p-3 flex items-center justify-center"}>
+                {companyLogoIcon === "jocq" ? (
+                  <JocqLogo className="h-24 w-24" showText={true} showCel={true} theme="light" />
+                ) : (
+                  renderLogoIcon("h-6 w-6 text-white")
+                )}
+              </div>
+              <div>
+                <h2 className="text-sm font-black tracking-tight text-slate-800 leading-none">REPORTE TÉCNICO OFICIAL</h2>
+                <p className="text-lg font-black text-slate-950 mt-1.5 uppercase">{companyName}</p>
+                <p className="text-[9px] text-slate-500 uppercase font-mono tracking-wider">Dosificación de Concreto de Peso Normal • ACI 211.1</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <span className="block text-[10px] bg-slate-900 text-slate-100 font-extrabold px-3 py-1.5 rounded-md uppercase tracking-wider">CONFORME ACI</span>
+              <span className="block text-[8px] text-slate-400 mt-1.5 font-mono">Generado: {new Date().toLocaleDateString("es-PE")}</span>
+            </div>
+          </div>
+
+          <div className="mb-6 bg-slate-50 p-4 rounded-xl border border-slate-200">
+            <span className="text-[10px] uppercase tracking-widest font-extrabold text-slate-450 block mb-1">Identificación del Proyecto</span>
+            <span className="text-sm font-bold text-slate-800">Proyecto de Obra: <span className="text-emerald-700 font-extrabold text-base">{projectName.toUpperCase()}</span></span>
+          </div>
+
+          <div className="grid grid-cols-2 gap-8 mb-8">
+            <div>
+              <h3 className="text-xs font-bold uppercase border-b border-slate-300 pb-1 mb-2.5">1. Requerimientos de Diseño</h3>
+              <table className="w-full text-xs text-left">
+                <tbody>
+                  <tr className="border-b border-slate-100"><td className="py-1 font-semibold text-slate-500">Resistencia f'c:</td><td className="text-right font-bold">{specs.specifiedStrength} kg/cm²</td></tr>
+                  <tr className="border-b border-slate-100"><td className="py-1 font-semibold text-slate-500">Resistencia f'cr:</td><td className="text-right font-bold">{calculationResult.targetStrength} kg/cm²</td></tr>
+                  <tr className="border-b border-slate-100"><td className="py-1 font-semibold text-slate-500">TMN de Piedra:</td><td className="text-right font-bold">{materials.coarseMaxNominalSize} pulgadas</td></tr>
+                  <tr className="border-b border-slate-100"><td className="py-1 font-semibold text-slate-500">Asentamiento:</td><td className="text-right font-bold">{specs.slumpRange} pulgadas</td></tr>
+                  <tr className="border-b border-slate-100"><td className="py-1 font-semibold text-slate-500">Aire Libre:</td><td className="text-right font-bold">{calculationResult.baseAirPct}%</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div>
+              <h3 className="text-xs font-bold uppercase border-b border-slate-300 pb-1 mb-2.5">2. Aditivos y Agregados</h3>
+              <table className="w-full text-xs text-left">
+                <tbody>
+                  <tr className="border-b border-slate-100"><td className="py-1 font-semibold text-slate-500">Aditivo Plastificante:</td><td className="text-right font-bold">{materials.hasAdditive ? `Sí, reduct. ${materials.additiveWaterReduction}%` : "No utiliza"}</td></tr>
+                  <tr className="border-b border-slate-100"><td className="py-1 font-semibold text-slate-500">Dosif. de Aditivo:</td><td className="text-right font-bold">{materials.hasAdditive ? `${materials.additiveDosage}% cto.` : "-"}</td></tr>
+                  <tr className="border-b border-slate-100"><td className="py-1 font-semibold text-slate-500">Humedad Arena:</td><td className="text-right font-bold">{materials.fineHumidity}%</td></tr>
+                  <tr className="border-b border-slate-100"><td className="py-1 font-semibold text-slate-500">Humedad Piedra:</td><td className="text-right font-bold">{materials.coarseHumidity}%</td></tr>
+                  <tr className="border-b border-slate-100"><td className="py-1 font-semibold text-slate-500">A/C Resultante:</td><td className="text-right font-bold">{calculationResult.waterCementRatio}</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <h3 className="text-xs font-bold uppercase border-b border-slate-300 pb-1 mb-4">3. Cuadro Resumen de Proporciones (1 m³)</h3>
+          <table className="w-full text-xs text-left border-collapse border border-slate-300 text-slate-800 mb-8">
+            <thead>
+              <tr className="bg-slate-100 border-b border-slate-300">
+                <th className="p-2 border-r border-slate-300">Material</th>
+                <th className="p-2 border-r border-slate-300 text-right">Peso Seco (kg)</th>
+                <th className="p-2 border-r border-slate-300 text-right">Corrección Humedad (kg)</th>
+                <th className="p-2 text-right">Peso de Obra Húmedo (kg)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-slate-200">
+                <td className="p-2 border-r border-slate-300 font-semibold">Cemento</td>
+                <td className="p-2 border-r border-slate-300 text-right">{calculationResult.cementWeight.toFixed(1)}</td>
+                <td className="p-2 border-r border-slate-300 text-right">-</td>
+                <td className="p-2 text-right font-bold">{calculationResult.cementWeight.toFixed(1)}</td>
+              </tr>
+              <tr className="border-b border-slate-200">
+                <td className="p-2 border-r border-slate-300 font-semibold">Arena (Agregado Fino)</td>
+                <td className="p-2 border-r border-slate-300 text-right">{calculationResult.fineAggregateDryWeight.toFixed(1)}</td>
+                <td className="p-2 border-r border-slate-300 text-right">+{calculationResult.fineAggregateWaterContribution.toFixed(1)}</td>
+                <td className="p-2 text-right font-bold">{calculationResult.fineAggregateWetWeight.toFixed(1)}</td>
+              </tr>
+              <tr className="border-b border-slate-200">
+                <td className="p-2 border-r border-slate-300 font-semibold">Piedra (Agregado Grueso)</td>
+                <td className="p-2 border-r border-slate-300 text-right">{calculationResult.coarseAggregateDryWeight.toFixed(1)}</td>
+                <td className="p-2 border-r border-slate-300 text-right">+{calculationResult.coarseAggregateWaterContribution.toFixed(1)}</td>
+                <td className="p-2 text-right font-bold">{calculationResult.coarseAggregateWetWeight.toFixed(1)}</td>
+              </tr>
+              <tr className="border-b border-slate-200">
+                <td className="p-2 border-r border-slate-300 font-semibold">Agua Efectiva</td>
+                <td className="p-2 border-r border-slate-300 text-right">{calculationResult.adjustedWaterVol.toFixed(1)} L</td>
+                <td className="p-2 border-r border-slate-300 text-right">-{calculationResult.totalWaterContribution.toFixed(1)} L</td>
+                <td className="p-2 text-right font-bold text-slate-900">{calculationResult.correctedWaterVol.toFixed(1)} L</td>
+              </tr>
+              {calculationResult.additiveWeight > 0 && (
+                <tr className="border-b border-slate-200">
+                  <td className="p-2 border-r border-slate-300 font-semibold">Aditivo</td>
+                  <td className="p-2 border-r border-slate-300 text-right">{calculationResult.additiveWeight.toFixed(2)}</td>
+                  <td className="p-2 border-r border-slate-300 text-right">Sin cambios</td>
+                  <td className="p-2 text-right font-bold">{calculationResult.additiveWeight.toFixed(2)}</td>
+                </tr>
               )}
+              <tr className="bg-slate-100 font-black">
+                <td className="p-2 border-r border-slate-300">TOTALES</td>
+                <td className="p-2 border-r border-slate-300 text-right">{calculationResult.totalDryWeight.toFixed(1)} kg</td>
+                <td className="p-2 border-r border-slate-300 text-right">Agua corregida</td>
+                <td className="p-2 text-right">{calculationResult.totalWetWeight.toFixed(1)} kg</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div className="grid grid-cols-2 gap-8 mt-12 mb-20 text-xs text-center border-t border-slate-200 pt-16">
+            <div>
+              <div className="border-b-2 border-dotted border-slate-900 w-3/4 mx-auto mb-2"></div>
+              <p className="font-bold">Ingeniero Proyectista</p>
+              <p className="text-slate-500">Diseño Tecnológico de Mezclas</p>
             </div>
             <div>
-              <h2 className="text-sm font-black tracking-tight text-slate-800 leading-none">REPORTE TÉCNICO OFICIAL</h2>
-              <p className="text-lg font-black text-slate-950 mt-1.5 uppercase">{companyName}</p>
-              <p className="text-[9px] text-slate-500 uppercase font-mono tracking-wider">Dosificación de Concreto de Peso Normal • ACI 211.1</p>
+              <div className="border-b-2 border-dotted border-slate-900 w-3/4 mx-auto mb-2"></div>
+              <p className="font-bold">Control de Calidad Obra</p>
+              <p className="text-slate-500">Supervisión Técnica</p>
             </div>
           </div>
-          <div className="text-right">
-            <span className="block text-[10px] bg-slate-900 text-slate-100 font-extrabold px-3 py-1.5 rounded-md uppercase tracking-wider">CONFORME ACI</span>
-            <span className="block text-[8px] text-slate-400 mt-1.5 font-mono">Generado: {new Date().toLocaleDateString("es-PE")}</span>
-          </div>
         </div>
-
-        <div className="mb-6 bg-slate-50 p-4 rounded-xl border border-slate-200">
-          <span className="text-[10px] uppercase tracking-widest font-extrabold text-slate-450 block mb-1">Identificación del Proyecto</span>
-          <span className="text-sm font-bold text-slate-800">Proyecto de Obra: <span className="text-emerald-700 font-extrabold text-base">{projectName.toUpperCase()}</span></span>
-        </div>
-
-        <div className="grid grid-cols-2 gap-8 mb-8">
-          <div>
-            <h3 className="text-xs font-bold uppercase border-b border-slate-300 pb-1 mb-2.5">1. Requerimientos de Diseño</h3>
-            <table className="w-full text-xs text-left">
-              <tbody>
-                <tr className="border-b border-slate-100"><td className="py-1 font-semibold text-slate-500">Resistencia f'c:</td><td className="text-right font-bold">{specs.specifiedStrength} kg/cm²</td></tr>
-                <tr className="border-b border-slate-100"><td className="py-1 font-semibold text-slate-500">Resistencia f'cr:</td><td className="text-right font-bold">{calculationResult.targetStrength} kg/cm²</td></tr>
-                <tr className="border-b border-slate-100"><td className="py-1 font-semibold text-slate-500">TMN de Piedra:</td><td className="text-right font-bold">{materials.coarseMaxNominalSize} pulgadas</td></tr>
-                <tr className="border-b border-slate-100"><td className="py-1 font-semibold text-slate-500">Asentamiento:</td><td className="text-right font-bold">{specs.slumpRange} pulgadas</td></tr>
-                <tr className="border-b border-slate-100"><td className="py-1 font-semibold text-slate-500">Aire Libre:</td><td className="text-right font-bold">{calculationResult.baseAirPct}%</td></tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div>
-            <h3 className="text-xs font-bold uppercase border-b border-slate-300 pb-1 mb-2.5">2. Aditivos y Agregados</h3>
-            <table className="w-full text-xs text-left">
-              <tbody>
-                <tr className="border-b border-slate-100"><td className="py-1 font-semibold text-slate-500">Aditivo Plastificante:</td><td className="text-right font-bold">{materials.hasAdditive ? `Sí, reduct. ${materials.additiveWaterReduction}%` : "No utiliza"}</td></tr>
-                <tr className="border-b border-slate-100"><td className="py-1 font-semibold text-slate-500">Dosif. de Aditivo:</td><td className="text-right font-bold">{materials.hasAdditive ? `${materials.additiveDosage}% cto.` : "-"}</td></tr>
-                <tr className="border-b border-slate-100"><td className="py-1 font-semibold text-slate-500">Humedad Arena:</td><td className="text-right font-bold">{materials.fineHumidity}%</td></tr>
-                <tr className="border-b border-slate-100"><td className="py-1 font-semibold text-slate-500">Humedad Piedra:</td><td className="text-right font-bold">{materials.coarseHumidity}%</td></tr>
-                <tr className="border-b border-slate-100"><td className="py-1 font-semibold text-slate-500">A/C Resultante:</td><td className="text-right font-bold">{calculationResult.waterCementRatio}</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <h3 className="text-xs font-bold uppercase border-b border-slate-300 pb-1 mb-4">3. Cuadro Resumen de Proporciones (1 m³)</h3>
-        <table className="w-full text-xs text-left border-collapse border border-slate-300 text-slate-800 mb-8">
-          <thead>
-            <tr className="bg-slate-100 border-b border-slate-300">
-              <th className="p-2 border-r border-slate-300">Material</th>
-              <th className="p-2 border-r border-slate-300 text-right">Peso Seco (kg)</th>
-              <th className="p-2 border-r border-slate-300 text-right">Corrección Humedad (kg)</th>
-              <th className="p-2 text-right">Peso de Obra Húmedo (kg)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="border-b border-slate-200">
-              <td className="p-2 border-r border-slate-300 font-semibold">Cemento</td>
-              <td className="p-2 border-r border-slate-300 text-right">{calculationResult.cementWeight.toFixed(1)}</td>
-              <td className="p-2 border-r border-slate-300 text-right">-</td>
-              <td className="p-2 text-right font-bold">{calculationResult.cementWeight.toFixed(1)}</td>
-            </tr>
-            <tr className="border-b border-slate-200">
-              <td className="p-2 border-r border-slate-300 font-semibold">Arena (Agregado Fino)</td>
-              <td className="p-2 border-r border-slate-300 text-right">{calculationResult.fineAggregateDryWeight.toFixed(1)}</td>
-              <td className="p-2 border-r border-slate-300 text-right">+{calculationResult.fineAggregateWaterContribution.toFixed(1)}</td>
-              <td className="p-2 text-right font-bold">{calculationResult.fineAggregateWetWeight.toFixed(1)}</td>
-            </tr>
-            <tr className="border-b border-slate-200">
-              <td className="p-2 border-r border-slate-300 font-semibold">Piedra (Agregado Grueso)</td>
-              <td className="p-2 border-r border-slate-300 text-right">{calculationResult.coarseAggregateDryWeight.toFixed(1)}</td>
-              <td className="p-2 border-r border-slate-300 text-right">+{calculationResult.coarseAggregateWaterContribution.toFixed(1)}</td>
-              <td className="p-2 text-right font-bold">{calculationResult.coarseAggregateWetWeight.toFixed(1)}</td>
-            </tr>
-            <tr className="border-b border-slate-200">
-              <td className="p-2 border-r border-slate-300 font-semibold">Agua Efectiva</td>
-              <td className="p-2 border-r border-slate-300 text-right">{calculationResult.adjustedWaterVol.toFixed(1)} L</td>
-              <td className="p-2 border-r border-slate-300 text-right">-{calculationResult.totalWaterContribution.toFixed(1)} L</td>
-              <td className="p-2 text-right font-bold text-slate-900">{calculationResult.correctedWaterVol.toFixed(1)} L</td>
-            </tr>
-            {calculationResult.additiveWeight > 0 && (
-              <tr className="border-b border-slate-200">
-                <td className="p-2 border-r border-slate-300 font-semibold">Aditivo</td>
-                <td className="p-2 border-r border-slate-300 text-right">{calculationResult.additiveWeight.toFixed(2)}</td>
-                <td className="p-2 border-r border-slate-300 text-right">Sin cambios</td>
-                <td className="p-2 text-right font-bold">{calculationResult.additiveWeight.toFixed(2)}</td>
-              </tr>
-            )}
-            <tr className="bg-slate-100 font-black">
-              <td className="p-2 border-r border-slate-300">TOTALES</td>
-              <td className="p-2 border-r border-slate-300 text-right">{calculationResult.totalDryWeight.toFixed(1)} kg</td>
-              <td className="p-2 border-r border-slate-300 text-right">Agua corregida</td>
-              <td className="p-2 text-right">{calculationResult.totalWetWeight.toFixed(1)} kg</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div className="grid grid-cols-2 gap-8 mt-12 mb-20 text-xs text-center border-t border-slate-200 pt-16">
-          <div>
-            <div className="border-b-2 border-dotted border-slate-900 w-3/4 mx-auto mb-2"></div>
-            <p className="font-bold">Ingeniero Proyectista</p>
-            <p className="text-slate-500">Diseño Tecnológico de Mezclas</p>
-          </div>
-          <div>
-            <div className="border-b-2 border-dotted border-slate-900 w-3/4 mx-auto mb-2"></div>
-            <p className="font-bold">Control de Calidad Obra</p>
-            <p className="text-slate-500">Supervisión Técnica</p>
-          </div>
-        </div>
-      </div>
+      )}
 
       {/* LOAD PROJECTS MODAL */}
       {showLoadModal && (

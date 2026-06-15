@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { MaterialProperties, DesignSpecifications, MixDesignResult } from "../types";
 import { NumericInput } from "./NumericInput";
+import { PRESETS } from "../presets";
 import {
   TMNS_LABELS,
   SLUMP_LABELS,
@@ -34,7 +35,8 @@ import {
   Boxes,
   Truck,
   Calculator,
-  Grid
+  Grid,
+  FolderOpen
 } from "lucide-react";
 
 interface InteractiveWizardProps {
@@ -220,6 +222,39 @@ export const InteractiveWizard: React.FC<InteractiveWizardProps> = ({
             {/* RENDERING DYNAMIC INPUTS ACCORDING TO THE ACTIVE STEP */}
             {activeStep === 1 && (
               <div className="space-y-4 font-sans animate-fade-in">
+                {/* Visual Preset Template Selector */}
+                <div className="bg-emerald-50/55 p-3.5 rounded-xl border border-emerald-100 shadow-3xs">
+                  <label className="block text-[10px] uppercase font-black text-emerald-800 tracking-wider mb-1.5 flex items-center gap-1.5 leading-none">
+                    <FolderOpen className="h-4 w-4 text-emerald-600" />
+                    Cargar Plantilla de Mezcla Rápida
+                  </label>
+                  <select
+                    id="preset-template-select-wizard"
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (val) {
+                        const p = PRESETS.find(item => item.id === val);
+                        if (p) {
+                          onMaterialsChange({ ...p.materials });
+                          onSpecsChange({ ...p.specs });
+                        }
+                      }
+                    }}
+                    className="w-full bg-white text-slate-800 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs font-bold focus:outline-hidden focus:ring-1 focus:ring-emerald-500 cursor-pointer"
+                    value=""
+                  >
+                    <option value="" disabled>-- Selecciona un diseño de mezcla predefinido --</option>
+                    {PRESETS.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.name}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-[9px] text-slate-500 mt-1 leading-normal">
+                    Preestablece automáticamente las propiedades de agregados y resistencia según el ACI 211.1.
+                  </p>
+                </div>
+
                 <div>
                   <label className="block text-xs font-black text-slate-700 mb-1">
                     Resistencia de Diseño Especificada f'c (kg/cm²)

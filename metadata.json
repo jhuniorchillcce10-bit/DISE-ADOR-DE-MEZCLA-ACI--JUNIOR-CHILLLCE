@@ -1,6 +1,6 @@
 {
-  "name": "ACI Concrete Mix Designer: JUNIOR CHILLCCE QUILCA",
-  "description": "Herramienta avanzada de diseño de mezclas de concreto utilizando el Método ACI con aditivos plastificantes / reductores de agua y ajustes automáticos por humedad.",
+  "name": "Suite de Ingeniería Civil RNE & Dosificación ACI",
+  "description": "Plataforma integral desarrollada por JHUNIOR CHILLCCE QUILCA para el diseño de mezclas de concreto bajo el método ACI 211.1 y plantillas de cálculo automatizadas alineadas al Reglamento Nacional de Edificaciones (RNE) del Perú.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
