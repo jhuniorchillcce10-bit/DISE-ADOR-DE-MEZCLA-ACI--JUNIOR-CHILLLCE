@@ -165,97 +165,25 @@ export const JocqLogo: React.FC<JocqLogoProps> = ({
       {/* Circular borders for high dynamic contrast */}
       <circle cx="250" cy="220" r="185" fill="none" stroke="#2563eb" strokeWidth="2.5" strokeDasharray="300 200 100 250" />
 
-      {/* 4. TYPOGRAPHY "JOCQ" - PREMIUM 3D VECTOR TYPE */}
+      {/* 4. TYPOGRAPHY "JUNIOR CC" - PREMIUM 3D VECTOR TYPE */}
       {showText && (
-        <g id="text-jocq" filter="url(#letterShadow)">
-          {/* We'll render JOCQ with individual custom path drawings so they scale with absolute precision */}
-          
-          {/* "J" - Custom Bold Rounded Blue */}
-          <path
-            d="M 65,340 
-               L 115,340 
-               L 115,372 
-               Q 115,400 85,400 
-               Q 65,400 65,380 
-               L 88,380 
-               Q 88,385 92,385 
-               Q 99,385 99,370 
-               L 99,340 
-               Z 
-               M 65,340 L 65,355 L 85,355 L 85,340 Z"
-            fill="url(#blue3D)"
-            stroke="#1d4ed8"
+        <g id="text-juniorcc" filter="url(#letterShadow)">
+          <text
+            x="250"
+            y="388"
+            fontFamily="'Montserrat', 'Arial Black', 'Impact', system-ui, -apple-system, sans-serif"
+            fontSize="58"
+            fontWeight="950"
+            fontStyle="italic"
+            textAnchor="middle"
+            letterSpacing="-0.5"
+            stroke="#000000"
             strokeWidth="1.5"
-          />
-
-          {/* "O" - Octagonal / Angular Concrete Block Look */}
-          <path
-            d="M 135,340 
-               L 185,340 
-               C 198,340 203,345 203,355 
-               L 203,385 
-               C 203,395 198,400 185,400 
-               L 135,400 
-               C 122,400 117,395 117,385 
-               L 117,355 
-               C 117,345 122,340 135,340 
-               Z 
-               M 143,355 
-               L 143,385 
-               L 177,385 
-               L 177,355 
-               Z"
-            fill="url(#grey3D)"
-            stroke="#111827"
-            strokeWidth="1.5"
-          />
-
-          {/* "C" - Custom Bold Rounded Blue Open-Right */}
-          <path
-            d="M 285,340 
-               L 220,340 
-               C 207,340 202,345 202,355 
-               L 202,385 
-               C 202,395 207,400 220,400 
-               L 285,400 
-               L 285,385 
-               L 226,385 
-               L 226,355 
-               L 285,355 
-               Z"
-            fill="url(#blue3D)"
-            stroke="#1d4ed8"
-            strokeWidth="1.5"
-          />
-
-          {/* "Q" - Octagonal slate with diagonal footer bar */}
-          <g>
-            <path
-              d="M 305,340 
-                 L 355,340 
-                 C 368,340 373,345 373,355 
-                 L 373,385 
-                 C 373,395 368,397 358,398 
-                 L 375,415 
-                 L 350,415 
-                 L 338,399 
-                 L 305,400 
-                 C 292,400 287,395 287,385 
-                 L 287,355 
-                 C 287,345 292,340 305,340 
-                 Z 
-                 M 313,355 
-                 L 313,385 
-                 L 347,385 
-                 L 347,355 
-                 Z"
-              fill="url(#grey3D)"
-              stroke="#111827"
-              strokeWidth="1.5"
-            />
-            {/* 3D Diagonal slash on Q */}
-            <path d="M338 390 L363 410 L370 405 L345 385 Z" fill="#2563eb" opacity="0.9" />
-          </g>
+            paintOrder="stroke"
+          >
+            <tspan fill="url(#blue3D)">JUNIOR</tspan>
+            <tspan fill="url(#grey3D)"> CC</tspan>
+          </text>
         </g>
       )}
 

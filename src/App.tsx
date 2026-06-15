@@ -17,7 +17,8 @@ import {
   Building,
   Compass,
   Workflow,
-  ClipboardList
+  ClipboardList,
+  Sliders
 } from "lucide-react";
 
 export default function App() {
@@ -27,7 +28,7 @@ export default function App() {
   const [specs, setSpecs] = useState<DesignSpecifications>(defaultPreset.specs);
   
   // App variables
-  const [activeTab, setActiveTab] = useState<"wizard" | "templates">("wizard");
+  const [activeTab, setActiveTab] = useState<"wizard" | "templates" | "granulometria">("wizard");
   const [projectName, setProjectName] = useState<string>("Mi Diseño de Mezcla");
   const [companyName, setCompanyName] = useState<string>("JUNIOR CC");
   const [companyLogoIcon, setCompanyLogoIcon] = useState<"shield" | "building" | "compass" | "hammer" | "jocq">("jocq");
@@ -134,7 +135,14 @@ export default function App() {
               <h1 className="text-base sm:text-lg font-bold tracking-tight text-white flex items-center gap-1.5">
                 Diseñador de Mezclas ACI <span className="text-[10px] bg-emerald-600/30 text-emerald-300 font-extrabold px-1.5 py-0.5 rounded-sm">CON ADITIVO</span>
               </h1>
-              <p className="text-[10px] text-emerald-400 font-semibold">{companyName.toUpperCase()}</p>
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className="text-[10px] text-emerald-400 font-extrabold tracking-wide">{companyName.toUpperCase()}</span>
+                <span className="text-[10px] text-slate-600">|</span>
+                <span className="text-[10px] text-slate-300 font-semibold hover:text-emerald-400 transition-colors flex items-center gap-1">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                  CEL. 910923800
+                </span>
+              </div>
             </div>
           </div>
           
@@ -186,7 +194,7 @@ export default function App() {
             <h2 className="text-sm font-bold text-slate-100 flex items-center gap-1.5">
               <span>Plataforma de Ingeniería Civil: Dosificación ACI 211.1 & Plantillas RNE</span>
             </h2>
-            <p className="text-[11px] text-slate-300 leading-relaxed md:w-[95%]">
+            <p className="text-[11px] text-slate-300 leading-relaxed md:w-[95%] text-justify">
               Esta plataforma profesional e inteligente ha sido diseñada y desarrollada por <span className="font-black text-white">JHUNIOR CHILLCCE QUILCA</span>, integrando el diseño avanzado de mezclas de concreto bajo las directrices del manual del <strong>American Concrete Institute (ACI 211.1)</strong> con una completa suite de plantillas de cálculo automatizadas en cumplimiento estricto del <strong>Reglamento Nacional de Edificaciones (RNE)</strong> del Perú (Normas de Carga E.020, Sismorresistente E.030, Suelos y Cimentaciones E.050, Concreto Armado E.060 y Albañilería E.070). Optimiza de forma interactiva la dosificación, ajustes por aditivo y corrección de humedad, junto con rigurosos análisis de longitudes de desarrollo, metrado de acero, rendimiento de ladrillos, capacidad portante, juntas sísmicas y diseño geométrico-cargado de escaleras.
             </p>
           </div>
@@ -232,6 +240,14 @@ export default function App() {
               <Hammer className="h-4 w-4" />
               Plantillas para Cálculo
             </button>
+            <button
+              id="tab-granulometria-btn"
+              onClick={() => setActiveTab("granulometria")}
+              className={`px-3.5 py-2 text-xs font-black uppercase rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${activeTab === "granulometria" ? "bg-purple-600 text-white shadow-xs" : "text-slate-600 hover:bg-slate-200"}`}
+            >
+              <Sliders className="h-4 w-4" />
+              Análisis Granulométrico
+            </button>
           </div>
 
           <div className="text-right hidden sm:block">
@@ -256,35 +272,37 @@ export default function App() {
               companyName={companyName}
             />
           </div>
+        ) : activeTab === "granulometria" ? (
+          <div id="templates-viewport" className="animate-fade-in w-full">
+            <CalculationTemplates initialTemplate="granulometria" />
+          </div>
         ) : (
           <div id="templates-viewport" className="animate-fade-in w-full">
-            <CalculationTemplates />
+            <CalculationTemplates initialTemplate="ld_acero" />
           </div>
         )}
 
       </main>
 
       {/* PRINT-ONLY VISUAL REPORT LAYOUT */}
-      {activeTab !== "templates" && (
+      {activeTab === "wizard" && (
         <div id="print-only-layout" className="hidden print:block max-w-4xl mx-auto bg-white p-12 text-slate-900 border border-slate-300 rounded-lg shadow-xs">
-          <div className="flex justify-between items-center border-b-2 border-slate-950 pb-5 mb-8">
-            <div className="flex items-center gap-4 text-left">
-              <div className={companyLogoIcon === "jocq" ? "bg-white p-1 rounded-xl" : "bg-slate-950 text-white rounded-xl p-3 flex items-center justify-center"}>
-                {companyLogoIcon === "jocq" ? (
-                  <JocqLogo className="h-24 w-24" showText={true} showCel={true} theme="light" />
-                ) : (
-                  renderLogoIcon("h-6 w-6 text-white")
-                )}
-              </div>
-              <div>
-                <h2 className="text-sm font-black tracking-tight text-slate-800 leading-none">REPORTE TÉCNICO OFICIAL</h2>
-                <p className="text-lg font-black text-slate-950 mt-1.5 uppercase">{companyName}</p>
-                <p className="text-[9px] text-slate-500 uppercase font-mono tracking-wider">Dosificación de Concreto de Peso Normal • ACI 211.1</p>
-              </div>
+          <div className="flex justify-between items-start border-b-2 border-slate-950 pb-5 mb-8">
+            <div className="text-left space-y-1.5">
+              <span className="inline-block text-[10px] bg-slate-900 text-slate-100 font-extrabold px-2.5 py-1 rounded uppercase tracking-wider">CONFORME ACI 211.1</span>
+              <h2 className="text-sm font-black tracking-tight text-slate-800 leading-none">REPORTE TÉCNICO DE DOSIFICACIÓN DE CONCRETO</h2>
+              <p className="text-lg font-black text-slate-950 mt-1.5 uppercase">JUNIOR CC</p>
+              <p className="text-[9px] text-slate-500 uppercase font-mono tracking-wider">Metodología de Mezclas de Peso Normal • Conforme al RNE del Perú</p>
             </div>
-            <div className="text-right">
-              <span className="block text-[10px] bg-slate-900 text-slate-100 font-extrabold px-3 py-1.5 rounded-md uppercase tracking-wider">CONFORME ACI</span>
-              <span className="block text-[8px] text-slate-400 mt-1.5 font-mono">Generado: {new Date().toLocaleDateString("es-PE")}</span>
+            <div className="flex items-start gap-3.5 text-right">
+              <div className="flex flex-col items-end">
+                <span className="block text-xs font-black text-slate-950 uppercase tracking-widest leading-none">JUNIOR CC</span>
+                <span className="block text-[8.5px] text-emerald-600 font-extrabold font-sans mt-1">CEL. 910923800</span>
+                <span className="block text-[7.5px] text-slate-450 font-mono mt-1">Generado: {new Date().toLocaleDateString("es-PE")}</span>
+              </div>
+              <div className="bg-white p-1 border border-slate-200 rounded-xl flex-shrink-0 -mt-2.5">
+                <JocqLogo className="h-16 w-16" showText={false} showCel={false} theme="light" />
+              </div>
             </div>
           </div>
 
