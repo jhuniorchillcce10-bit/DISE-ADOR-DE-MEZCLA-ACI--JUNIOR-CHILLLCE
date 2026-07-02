@@ -7,15 +7,22 @@ interface NumericInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
 
 export const NumericInput: React.FC<NumericInputProps> = ({ value, onChange, className, ...props }) => {
   const [inputValue, setInputValue] = useState<string>(value !== undefined && value !== null ? value.toString() : "");
+  const [isFocused, setIsFocused] = useState<boolean>(false);
 
   // Update local string value when the prop value changes externally (e.g. via preset loading)
   useEffect(() => {
-    const parsedLocal = parseFloat(inputValue);
-    // Only update if the numerical value actually differs, to prevent interrupting active typing
-    if (isNaN(parsedLocal) || parsedLocal !== value) {
-      setInputValue(value !== undefined && value !== null ? value.toString() : "");
+    if (!isFocused) {
+      const parsedLocal = parseFloat(inputValue);
+      const isLocalNaN = isNaN(parsedLocal);
+      const isValueNaN = isNaN(value);
+      
+      const numbersAreEqual = (isLocalNaN && isValueNaN) || (!isLocalNaN && !isValueNaN && parsedLocal === value);
+      
+      if (!numbersAreEqual) {
+        setInputValue(value !== undefined && value !== null ? value.toString() : "");
+      }
     }
-  }, [value]);
+  }, [value, isFocused]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawVal = e.target.value;
@@ -35,7 +42,12 @@ export const NumericInput: React.FC<NumericInputProps> = ({ value, onChange, cla
     }
   };
 
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
   const handleBlur = () => {
+    setIsFocused(false);
     // Format perfectly to the updated state value once focus is lost
     setInputValue(value !== undefined && value !== null ? value.toString() : "");
   };
@@ -46,6 +58,7 @@ export const NumericInput: React.FC<NumericInputProps> = ({ value, onChange, cla
       inputMode="decimal"
       value={inputValue}
       onChange={handleChange}
+      onFocus={handleFocus}
       onBlur={handleBlur}
       className={className}
       {...props}

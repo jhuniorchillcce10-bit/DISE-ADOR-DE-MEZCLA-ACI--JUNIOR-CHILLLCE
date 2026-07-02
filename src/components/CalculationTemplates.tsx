@@ -75,7 +75,11 @@ export function SafeNumberInput({ value, onChange, fallback = 0, isInteger = fal
 
   useEffect(() => {
     const parsed = isInteger ? parseInt(localVal, 10) : parseFloat(localVal);
-    if (parsed !== value && !(isNaN(parsed) && value === fallback)) {
+    const isLocalNaN = isNaN(parsed);
+    const isValueNaN = isNaN(value);
+    const numbersAreEqual = (isLocalNaN && isValueNaN) || (!isLocalNaN && !isValueNaN && parsed === value);
+
+    if (!numbersAreEqual && !(isLocalNaN && value === fallback)) {
       setLocalVal(value.toString());
     }
   }, [value, isInteger, fallback]);
